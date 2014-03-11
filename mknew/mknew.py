@@ -18,6 +18,7 @@ TMPL_DIR = "Templates"
 _entries = dict()  # name as str -> entry as Entry
 _files = dict()
 _jenv = None
+_ctx = dict()
 
 
 def is_ignored(name):
@@ -166,6 +167,28 @@ def make_files(files, tmpl, dest):
     if os.path.exists(path):
       print(path, "already existing, not making files")
       sys.exit(1)
+  ## replace dest path/dir parts with context values if exists
+  make_set2 = list()
+  for thing, path in make_set:
+    npath = list()
+    for part in path.split(os.sep):
+      if part in _ctx:
+        npath.append(_ctx[part])
+      else:
+        npath.append(part)
+    make_set2.append((thing, os.sep.join(npath)))
+  make_set = make_set2
+  ## replace dest path file basename with context values if exists
+  make_set2 = list()
+  for thing, path in make_set:
+    head, ext = os.path.splitext(path)
+    name = os.path.basename(head)
+    dirname = os.path.dirname(head)
+    if name in _ctx:
+      name = _ctx[name]
+    path = j(dirname,name + ext)
+    make_set2.append((thing, path))
+  make_set = make_set2
   ## make
   for thing, path in make_set:
     make_file(thing, path)
@@ -195,6 +218,9 @@ def main():
   else:
     if args.dest is None:
       args.dest = args.tmpl
+    _ctx["tmpl"] = args.tmpl
+    _ctx["dest"] = args.dest
+    _ctx["name"] = args.dest
     make_files(_files, args.tmpl, args.dest)
   D("done.")
   sys.exit(0)
