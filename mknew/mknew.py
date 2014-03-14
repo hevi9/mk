@@ -3,6 +3,8 @@
 ## Copyright (C) 2014 Petri Heinilä, License LGPL 2.1
 
 import logging
+import getpass
+import yaml
 log = logging.getLogger(__name__)
 D = log.debug
 import argparse
@@ -11,14 +13,35 @@ j = os.path.join
 from fnmatch import fnmatch
 import jinja2
 import sys
+import time
 
+
+## control
+APP_NAME = "mknew" # TODO: use pkg_* something
 TMPL_DIR = "Templates"
+CTRL_DIR = j(os.environ["HOME"], ".config", APP_NAME)
+CTRL_CTX_FILE = j(CTRL_DIR, "context.yml")
 
 
+## module globals 
 _entries = dict()  # name as str -> entry as Entry
 _files = dict()
 _jenv = None
 _ctx = dict()
+
+
+## context spec
+
+_ctx_spec = {
+  "day": "current local day of month",
+  "month": "current local month",
+  "year": "current local year",
+  "user": "local user name",
+  "author": "Author real name",
+  "tmpl": "template file",
+  "dest": "destination file or dir",
+  "name": "given name for new thing to create, a file or a dir"
+}
 
 
 def is_ignored(name):
@@ -93,7 +116,13 @@ class File(Thing):
     self.files = [self]
 
   def show(self):
-    return "F {}".format(self.path)
+    return "* {}".format(self.path)
+
+  def make(self, dest):
+    print("mk file", self.path, "=>", dest)
+    jtmpl = _jenv.get_template(self.path)
+    with open(dest, "w") as fo:
+      fo.write(jtmpl.render(_ctx))
 
 
 class Dir(Thing):
@@ -103,7 +132,11 @@ class Dir(Thing):
     self.files = list()
 
   def show(self):
-    return "D {} {}".format(self.path, len(self.files))
+    return "/ {} ({} files)".format(self.path, len(self.files))
+
+  def make(self, dest):
+    print("mk dir", self.path, "=>", dest)
+    os.mkdir(dest)
 
 
 def _add_path_to_dirs(files, thing):
@@ -132,7 +165,7 @@ def find_files(roots, files_store):
 
 
 def show_files(files, match=None):
-  print("Templates ({}):".format(len(files)))
+  print("Templates (all {}):".format(len(files)))
   if match is None:
     match = "*"
   else:
@@ -142,26 +175,41 @@ def show_files(files, match=None):
       print(" ", files[file].show())
 
 
-def make_file(thing, dest):
-  print("mk", thing.path, "=>", dest)
-  if isinstance(thing, Dir):
-    os.mkdir(dest)
-  else:
-    jtmpl = _jenv.get_template(thing.path)
-    with open(dest, "w") as fo:
-      fo.write(jtmpl.render({}))
+def fill_ctx(_ctx):
+  c = _ctx
+  c["year"] = time.localtime().tm_year
+  c["month"] = time.localtime().tm_mon
+  c["day"] = time.localtime().tm_mday
+  c["user"] = getpass.getuser()
+
+
+def fill_ctx_file(ctx, path):
+  if not os.path.isfile(path):
+    D("no context file %s, pass", path)
+    return
+  try:
+    with open(path) as fo:
+      D("loading context from %s", path)
+      db = yaml.load(fo)
+  except yaml.parser.ParserError as ex:
+    print("Context file syntax error:",str(ex))
+    sys.exit(1)
+  ctx.update(db)
 
 
 def make_files(files, tmpl, dest):
   thing = files[tmpl]
   make_set = list()
+  ## if dir then replace root with dest and map subtree files under that name  
   if isinstance(thing, Dir):
     make_set.append((thing, dest))
-  for thing in thing.files:
-    path = thing.path.split(os.sep)
-    path[0] = dest
-    path = os.sep.join(path)
-    make_set.append((thing, path))
+    for thing in thing.files:
+      path = thing.path.split(os.sep)
+      path[0] = dest
+      path = os.sep.join(path)
+      make_set.append((thing, path))
+  else: # just one file
+    make_set.append((thing, os.path.basename(dest)))
   ## check is dest files exists
   for thing, path in make_set:
     if os.path.exists(path):
@@ -191,16 +239,37 @@ def make_files(files, tmpl, dest):
   make_set = make_set2
   ## make
   for thing, path in make_set:
-    make_file(thing, path)
+    thing.make(path)
 
 
-ARGS = argparse.ArgumentParser()
+def show_info():
+  print("Context values to be used in jinja2 template file:")
+  keys = set()
+  for key in _ctx.keys():
+    keys.add(key)
+  for key in _ctx_spec.keys():
+    keys.add(key)  
+  for name in sorted(keys):
+    value = _ctx.get(name ,"(not set (yet))")
+    desc = _ctx_spec.get(name ,"no desc")
+    print(" ",name,"=",value,"--",desc)
+
+##############################################################################
+
+ARGS = argparse.ArgumentParser(formatter_class=
+                               argparse.ArgumentDefaultsHelpFormatter)
 ARGS.add_argument("tmpl", nargs="?",
                   help="thing (file,dir,project,..) to create")
 ARGS.add_argument("dest", nargs="?",
                   help="thing (file,dir,project,..) to create")
 ARGS.add_argument("-d", "--debug", action="store_true",
                   help="set debugging on")
+ARGS.add_argument("-i", "--info", action="store_true",
+                  help="show information")
+ARGS.add_argument("--context", 
+                  metavar="FILE",
+                  default=CTRL_CTX_FILE,
+                  help="Context file".format(CTRL_CTX_FILE))
 
 
 def main():
@@ -212,15 +281,21 @@ def main():
   _jenv = jinja2.Environment(loader=jinja2.FunctionLoader(load_tmpl))
   roots = find_tmpl_roots()
   find_files(roots, _files)
+  fill_ctx(_ctx)
+  fill_ctx_file(_ctx, args.context)
+  ## execute
+  if args.info:
+    show_info()
+    sys.exit(0)
   if args.tmpl not in _files:
     show_files(_files, args.tmpl)
     sys.exit(3)
-  else:
+  else:    
     if args.dest is None:
       args.dest = args.tmpl
     _ctx["tmpl"] = args.tmpl
     _ctx["dest"] = args.dest
-    _ctx["name"] = args.dest
+    _ctx["name"] = args.dest    
     make_files(_files, args.tmpl, args.dest)
   D("done.")
   sys.exit(0)
