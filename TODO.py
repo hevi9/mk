@@ -4,3 +4,4 @@
 # TODO: binary/text file detection and handling
 # TODO: bash completion support
 # TODO: -e flag and $EDITOR env to edit text template files 
+# TODO: show templates, fix sub tree files under root
