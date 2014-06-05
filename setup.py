@@ -3,22 +3,22 @@
 ## Copyright (C) 2014 Petri Heinilä, License LGPL 2.1
 
 from setuptools import setup, find_packages
-from hevi_lib.setups import package_data, console_scripts
-from hevi_lib.modules import inject
 
-inject("INFO")
+info = dict()
+with open("INFO") as f:
+  exec(f.read(),info)
 
 setup(
-  #install_requires=['setuptools'], # -U seems to re-force setuptools installation
-  name=name,
-  version=version,
-  description=title,
-  author=author,
-  url=url,
+  name=info["name"],
+  version=info["version"],
+  description=info["title"],
+  author=info["author"],
+  url=info["url"],
   packages = find_packages(),
-  package_data = {name: package_data(name) },
   entry_points={
-    'console_scripts': console_scripts(name)
+    "console_scripts": [
+      "mknew=mknew.mknew:main"
+    ]
   },
-  license = license
+  license = info["license"]  
 )

@@ -7,6 +7,7 @@ RMALL = rm -rf
 RM = rm -f
 CPALL = cp -au
 PY3 = python3
+PIP3 = pip3
 SPHINX = sphinx-build
 PEP8 = pep8 --first --show-source --show-pep8
 PYLINT = pylint  --rcfile=setup.cfg
@@ -37,10 +38,10 @@ help::
 	@echo "  style       - python code checks"
 
 install:
-	$(PY3) setup.py install --prefix=$(prefix)
+	$(PIP3) install -r requirements.txt .
 
 develop:
-	$(PY3) setup.py develop
+	$(PIP3) install -r developmemt_requirements.txt -r requirements.txt -e .
 
 test:
 	$(PY3) -m unittest discover -s test -v
