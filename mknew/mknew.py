@@ -31,7 +31,6 @@ _ctx = dict()
 
 
 ## context spec
-
 _ctx_spec = {
   "day": "current local day of month",
   "month": "current local month",
@@ -44,7 +43,8 @@ _ctx_spec = {
 }
 
 
-def is_ignored(name):
+def is_ignored(name): # TODO: this to control
+  """ Lookup if name, file or either name should be ignored in processing. """
   ignored = [
     ".project",
     ".pydevproject",
@@ -79,10 +79,11 @@ def find_tmpl_roots():
   return result2
 
 
+# template file source check function for jinja2
 def updatefunc():
   return True
 
-
+# template file load function for jinja2
 def load_tmpl(name):
   file = _files[name]
   with open(file.apath) as fo:
@@ -91,6 +92,7 @@ def load_tmpl(name):
 
 
 class Thing(object):
+  """ Base class for some Thing that will be templated into instance. """
 
   def __init__(self, root, path):
     self._root = root
@@ -98,14 +100,17 @@ class Thing(object):
 
   @property
   def path(self):
+    """ Relative path from template directory root """
     return self._path
 
   @property
   def root(self):
+    """ Root of template tree. """
     return self._root
 
   @property
   def apath(self):
+    """ Absolute path in OS filesystem. """
     return j(self._root, self._path)
 
 
@@ -175,8 +180,9 @@ def show_files(files, match=None):
       print(" ", files[file].show())
 
 
-def fill_ctx(_ctx):
-  c = _ctx
+def fill_ctx(ctx):
+  """ Fill context dict ctx with default or system values. """
+  c = ctx
   c["year"] = time.localtime().tm_year
   c["month"] = time.localtime().tm_mon
   c["day"] = time.localtime().tm_mday
@@ -184,6 +190,7 @@ def fill_ctx(_ctx):
 
 
 def fill_ctx_file(ctx, path):
+  """ Fill context dict ctx with data from given file path as yaml format. """
   if not os.path.isfile(path):
     D("no context file %s, pass", path)
     return
@@ -265,7 +272,7 @@ ARGS.add_argument("dest", nargs="?",
 ARGS.add_argument("-d", "--debug", action="store_true",
                   help="set debugging on")
 ARGS.add_argument("-i", "--info", action="store_true",
-                  help="show information")
+                  help="show operation information")
 ARGS.add_argument("--context", 
                   metavar="FILE",
                   default=CTRL_CTX_FILE,
@@ -278,7 +285,8 @@ def main():
   if args.debug:
     logging.getLogger().setLevel(logging.DEBUG)
   global _jenv
-  _jenv = jinja2.Environment(loader=jinja2.FunctionLoader(load_tmpl))
+  _jenv = jinja2.Environment(loader=jinja2.FunctionLoader(load_tmpl),
+                             undefined=jinja2.StrictUndefined)
   roots = find_tmpl_roots()
   find_files(roots, _files)
   fill_ctx(_ctx)
@@ -295,8 +303,11 @@ def main():
       args.dest = args.tmpl
     _ctx["tmpl"] = args.tmpl
     _ctx["dest"] = args.dest
-    _ctx["name"] = args.dest    
-    make_files(_files, args.tmpl, args.dest)
+    _ctx["name"] = args.dest
+    try:
+      make_files(_files, args.tmpl, args.dest)
+    except jinja2.exceptions.UndefinedError as ex:
+      print("?? context variable",ex,", empty substitution applied")
   D("done.")
   sys.exit(0)
 

@@ -3,7 +3,7 @@
 
 name    = "mknew"
 title   = "Make new files, dirs, projects from templates"
-version = 3
+version = 4
 author  = "Petri Heinilä"
 url     = "http://github.com/hevi9/mknew"
 license = "LGPL 2.1"
