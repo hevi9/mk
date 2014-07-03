@@ -265,18 +265,25 @@ def show_info():
 
 ARGS = argparse.ArgumentParser(formatter_class=
                                argparse.ArgumentDefaultsHelpFormatter)
-ARGS.add_argument("tmpl", nargs="?",
+ARGS.add_argument("tmpl", 
+                  nargs="?",
+                  help="""template to make (file,dir,project,..). If tmpl is exact
+                  match the template will be made with template basename. If tmpl
+                  is partial match, matching templates will be listed. If tmpl is
+                  not given, all templates will be listed.""")
+ARGS.add_argument("dest", 
+                  nargs="?",
                   help="thing (file,dir,project,..) to create")
-ARGS.add_argument("dest", nargs="?",
-                  help="thing (file,dir,project,..) to create")
-ARGS.add_argument("-d", "--debug", action="store_true",
+ARGS.add_argument("-d", "--debug", 
+                  action="store_true",
                   help="set debugging on")
-ARGS.add_argument("-i", "--info", action="store_true",
-                  help="show operation information")
+ARGS.add_argument("-i", "--info", 
+                  action="store_true",
+                  help="show operation information. list jinja2 context variables.")
 ARGS.add_argument("--context", 
                   metavar="FILE",
                   default=CTRL_CTX_FILE,
-                  help="Context file".format(CTRL_CTX_FILE))
+                  help="Context variable file".format(CTRL_CTX_FILE))
 
 
 def main():
