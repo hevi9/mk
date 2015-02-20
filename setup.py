@@ -5,8 +5,7 @@
 from setuptools import setup, find_packages
 
 info = dict()
-with open("INFO") as f:
-  exec(f.read(),info)
+with open("INFO") as f: exec(f.read(),info)
 
 setup(
   name=info["name"],

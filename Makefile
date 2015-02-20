@@ -41,7 +41,7 @@ install:
 	$(PIP3) install --no-deps --upgrade -r requirements.txt .
 
 develop:
-	$(PIP3) install --no-deps --upgrade -r developmemt_requirements.txt -r requirements.txt -e .
+	$(PIP3) install -r developmemt_requirements.txt -r requirements.txt -e .
 
 test:
 	$(PY3) -m unittest discover -s test -v
