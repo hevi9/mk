@@ -3,6 +3,7 @@ mknew
 
 make new files, dirs, projects from jinja2 templates
 
+Outdated, use https://github.com/audreyr/cookiecutter
 
 Install
 =======
