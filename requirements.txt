@@ -1,3 +1,0 @@
-git+git://github.com/hevi9/hevi-lib/#egg=hevi-lib
-jinja2
-PyYAML
