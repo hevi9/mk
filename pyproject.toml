@@ -10,6 +10,9 @@ python = "^3.8"
 Jinja2 = "^2.11.2"
 PyYAML = "^5.3.1"
 click = "^7.1.2"
+python-decouple = "^3.3"
+decouple = "^0.0.7"
+loguru = "^0.5.3"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
