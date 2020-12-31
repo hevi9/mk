@@ -5,6 +5,8 @@ from . import make
 
 @click.command()
 def cli():
+    # sources = find_sources()
+    # source = get_name_from_sources(name, sources)
     make()
 
 
