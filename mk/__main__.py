@@ -22,6 +22,8 @@ def find_sources(paths):
 def cli(paths, name):
     sources = find_sources(paths)
     # source = get_name_from_sources(name, sources)
+    # target = Target(source, target_name)
+    # validate(target)
     # make()
     click.echo(f"{paths}")
     pass
