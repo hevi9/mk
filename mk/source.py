@@ -19,6 +19,9 @@ def make_sources_from_file_yaml(path_root: Path, path_rel: Path) -> Iterable[Sou
             data = strictyaml.load(text).data
             pass
     except ScannerError as ex:
-        pass
+        # add path to scanner exception
+        ex.context_mark.name = str(path_abs)
+        ex.problem_mark.name = str(path_abs)
+        raise ex
     except Exception as ex:
         raise ex

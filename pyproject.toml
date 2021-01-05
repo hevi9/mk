@@ -19,7 +19,6 @@ pylint = "^2.6.0"
 pytest = "^6.2.1"
 safety = "^1.10.0"
 black = "^20.8b1"
-ensure = "^1.0.0"
 
 [tool.poetry.scripts]
 mk = 'mk.__main__:cli'

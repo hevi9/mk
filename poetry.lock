@@ -112,17 +112,6 @@ toml = "*"
 pipenv = ["pipenv"]
 
 [[package]]
-name = "ensure"
-version = "1.0.0"
-description = "Literate BDD assertions in Python with no magic"
-category = "dev"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-six = ">=1.9.0"
-
-[[package]]
 name = "flake8"
 version = "3.8.4"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -492,7 +481,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "bcd2aef10fcfbd99ad48fde14f8ea4d0f0207ecc3c8e2d11180ca100f478a916"
+content-hash = "f4ab1abed2169b13d6b058d55a608ba6956aed863348a27b329bb6da7db05ae9"
 
 [metadata.files]
 appdirs = [
@@ -533,10 +522,6 @@ colorama = [
 dparse = [
     {file = "dparse-0.5.1-py3-none-any.whl", hash = "sha256:e953a25e44ebb60a5c6efc2add4420c177f1d8404509da88da9729202f306994"},
     {file = "dparse-0.5.1.tar.gz", hash = "sha256:a1b5f169102e1c894f9a7d5ccf6f9402a836a5d24be80a986c7ce9eaed78f367"},
-]
-ensure = [
-    {file = "ensure-1.0.0-py2.py3-none-any.whl", hash = "sha256:e8ee163a949a7b5ba3f0e2c6b1d20fe603864bb4ae034a219047547989c59ea3"},
-    {file = "ensure-1.0.0.tar.gz", hash = "sha256:61ef7a640914c317ab18026f05618d84004465614c1854264b3c63b2c81a64e7"},
 ]
 flake8 = [
     {file = "flake8-3.8.4-py2.py3-none-any.whl", hash = "sha256:749dbbd6bfd0cf1318af27bf97a14e28e5ff548ef8e5b1566ccfb25a11e7c839"},

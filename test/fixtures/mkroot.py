@@ -17,7 +17,7 @@ NO
 
 SOURCE_ERROR_2 = """
 - FI
-- SE
+al dkaswdkas - SE
 - NO
 """.strip()
 
