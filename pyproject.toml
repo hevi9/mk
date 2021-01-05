@@ -8,10 +8,10 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.8"
 Jinja2 = "^2.11.2"
-PyYAML = "^5.3.1"
 click = "^7.1.2"
 python-decouple = "^3.3"
 loguru = "^0.5.3"
+strictyaml = "^1.2.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
@@ -19,6 +19,7 @@ pylint = "^2.6.0"
 pytest = "^6.2.1"
 safety = "^1.10.0"
 black = "^20.8b1"
+ensure = "^1.0.0"
 
 [tool.poetry.scripts]
 mk = 'mk.__main__:cli'
