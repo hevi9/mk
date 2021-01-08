@@ -4,9 +4,12 @@ from pathlib import Path
 from typing import Dict, Union
 
 SOURCE_PRIMARY = """
-source: primary_file
-make:
-  - echo primary_file
+- source: primary_file
+  make:
+    - echo primary_file
+- source: other_source
+  make:
+    - echo other source
 """.strip()
 
 SOURCE_ERROR_1 = """
