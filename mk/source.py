@@ -25,8 +25,7 @@ def make_sources_from_data(data: Iterable, location: Location) -> Iterable[Sourc
         yield make_source_from_item(item, location)
 
 
-def make_sources_from_file_yaml(path_root: Path, path_rel: Path) -> Iterable[Source]:
-    location = Location(path_root=path_root, path_rel=path_rel)
+def make_sources_from_file_yaml(location: Location) -> Iterable[Source]:
     with location.path_abs.open() as fo:
         text = fo.read()
         data = strictyaml.load(text, label=str(location.path_abs)).data

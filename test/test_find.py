@@ -15,3 +15,10 @@ def test_find_mk_files(mkroots):
             Path(".mk.yaml"),
             Path("prj/.mk.yaml"),
         )
+
+
+def test_find_mk_sources_from_roots(mkroots):
+    for source in mk.find.find_mk_sources_from_roots(
+        [mkroots["base"]["."], mkroots["other"]["."]], []
+    ):
+        assert source.source in ("primary_file", "other_source")

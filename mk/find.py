@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Iterable
 
 from .location import Location
+from .source import Source, make_sources_from_file_yaml
 
 MK_GLOB = ("*.mk.yaml", "*.mk.yml")
 
@@ -23,3 +24,10 @@ def find_mk_files(mkpath: Iterable[Path], ignore: Iterable[str]) -> Iterable[Loc
 
     for root in mkpath:
         yield from traverse(Path("."))
+
+
+def find_mk_sources_from_roots(
+    roots: Iterable[Path], ignore: Iterable[str]
+) -> Iterable[Source]:
+    for location in find_mk_files(roots, ignore):
+        yield from make_sources_from_file_yaml(location)
