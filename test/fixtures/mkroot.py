@@ -1,7 +1,7 @@
 import pytest
 from pathlib import Path
 
-from typing import Dict, Union
+from typing import Dict, Union, Tuple
 
 SOURCE_PRIMARY = """
 - source: primary_file
@@ -25,9 +25,10 @@ al dkaswdkas - SE
 """.strip()
 
 
-def have(path_root: Path, path_rel: Union[Path, str], text: str) -> (Path, Path):
+def have(path_root: Path, path_rel: Union[Path, str], text: str) -> Tuple[Path, Path]:
     path_rel = Path(path_rel)
     path_abs = path_root / path_rel
+    path_abs.parent.mkdir(parents=True, exist_ok=True)
     with open(path_abs, "w") as fo:
         fo.write(text)
     return path_root, path_rel
@@ -39,20 +40,28 @@ def mkroots(tmp_path_factory) -> Dict:
     root_other = tmp_path_factory.mktemp("other")
     root_errors = tmp_path_factory.mktemp("errors")
     return {
-        "base": {"primary.yaml": have(root_base, "primary.yaml", SOURCE_PRIMARY)},
-        "other": {},
+        "base": {
+            ".": root_base,
+            "primary.mk.yaml": have(root_base, "primary.mk.yaml", SOURCE_PRIMARY),
+            ".mk.yaml": have(root_base, ".mk.yaml", SOURCE_PRIMARY),
+            "prj": {
+                ".mk.yaml": have(root_base, "prj/.mk.yaml", SOURCE_PRIMARY),
+            },
+        },
+        "other": {".": root_other},
         "errors": {
-            "error1.yaml": have(root_errors, "error1.yaml", SOURCE_ERROR_1),
-            "error2.yaml": have(root_errors, "error2.yaml", SOURCE_ERROR_2),
+            ".": root_errors,
+            "error1.mk.yaml": have(root_errors, "error1.mk.yaml", SOURCE_ERROR_1),
+            "error2.mk.yaml": have(root_errors, "error2.mk.yaml", SOURCE_ERROR_2),
         },
     }
 
 
 @pytest.fixture(scope="session")
-def mkprimary(mkroots) -> (Path, Path):
-    return mkroots["base"]["primary.yaml"]
+def mkprimary(mkroots) -> Tuple[Path, Path]:
+    return mkroots["base"]["primary.mk.yaml"]
 
 
 @pytest.fixture(scope="session")
-def mkerror(mkroots) -> (Path, Path):
-    return mkroots["errors"]["error1.yaml"]
+def mkerror(mkroots) -> Tuple[Path, Path]:
+    return mkroots["errors"]["error1.mk.yaml"]

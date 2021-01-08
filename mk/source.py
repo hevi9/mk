@@ -3,17 +3,10 @@ from dataclasses import dataclass
 
 from typing import Iterable
 
+# noinspection Mypy
 import strictyaml
 
-
-@dataclass
-class Location:
-    path_root: Path
-    path_rel: Path
-
-    @property
-    def path_abs(self):
-        return self.path_root / self.path_rel
+from mk.location import Location
 
 
 @dataclass
