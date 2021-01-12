@@ -14,7 +14,7 @@ SOURCE_PRIMARY = """
   uses:
     - primary_file
     - other_source
-    
+
 """.strip()
 
 SOURCE_ERROR_1 = """
