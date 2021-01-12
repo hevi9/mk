@@ -11,10 +11,10 @@ SOURCE_PRIMARY = """
   make:
     - echo other source
 - source: combined
-  uses:
+  make:
     - primary_file
     - other_source
-    
+
 """.strip()
 
 SOURCE_ERROR_1 = """
