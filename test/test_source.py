@@ -2,7 +2,9 @@ from ruamel.yaml.scanner import ScannerError
 
 import pytest
 import mk.source
+from mk.index import Index
 from mk.location import Location
+from mk.run import run
 
 # noinspection PyUnresolvedReferences
 from .fixtures import mkprimary, mkerror, mkroots
@@ -27,3 +29,14 @@ def test_error_1(mkroots):
             pass
     msg = str(ex.value)
     assert "error1.mk.yaml" in msg
+
+
+def test_source_run(mkroots):
+    path_root, path_rel = mkroots["base"]["primary.mk.yaml"]
+    index = Index()
+    for source in mk.source.make_sources_from_file_yaml(
+        Location(path_root=path_root, path_rel=path_rel)
+    ):
+        index.add_source(source)
+    source = index.find("primary_file")
+    run(source)

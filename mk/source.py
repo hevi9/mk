@@ -7,17 +7,26 @@ from typing import Iterable
 import strictyaml
 
 from mk.location import Location
+from .shell import Shell
 
 
 @dataclass
 class Source:
     source: str
-    make: Iterable[str]
+    make: Iterable[Shell]
     location: Location
+
+    @property
+    def id(self):
+        return str(self.location.path_rel.parent / self.source)
 
 
 def make_source_from_item(item: dict, location: Location) -> Source:
-    return Source(source=item["source"], make=item["make"], location=location)
+    return Source(
+        source=item["source"],
+        make=[Shell(i) for i in item["make"]],
+        location=location,
+    )
 
 
 def make_sources_from_data(data: Iterable, location: Location) -> Iterable[Source]:

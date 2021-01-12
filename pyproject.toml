@@ -23,6 +23,7 @@ assertpy = "^1.1"
 mypy = "^0.790"
 pytest-cov = "^2.10.1"
 pre-commit = "^2.9.3"
+Sphinx = "^3.4.3"
 
 [tool.poetry.scripts]
 mk = 'mk.__main__:cli'
