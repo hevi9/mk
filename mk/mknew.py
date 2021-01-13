@@ -38,19 +38,13 @@ _ctx_spec = {
     "author": "Author real name",
     "tmpl": "template file",
     "dest": "destination file or dir",
-    "name": "given name for new thing to create, a file or a dir"
+    "name": "given name for new thing to create, a file or a dir",
 }
 
 
 def is_ignored(name):  # TODO: this to control
     """ Lookup if name, file or either name should be ignored in processing. """
-    ignored = [
-        ".project",
-        ".pydevproject",
-        ".settings",
-        ".svn",
-        ".git"
-    ]
+    ignored = [".project", ".pydevproject", ".settings", ".svn", ".git"]
     for pat in ignored:
         if fnmatch(name, pat):
             return True
@@ -58,9 +52,9 @@ def is_ignored(name):  # TODO: this to control
 
 
 def find_tmpl_roots():
-    """ Find template directory roots. Resolving priority order.
+    """Find template directory roots. Resolving priority order.
     1) Up to the file-system root from current working directory.
-    2) $HOME/Templates """
+    2) $HOME/Templates"""
     result = list()
     ## find upwards
     path = os.getcwd().split(os.sep)
@@ -115,7 +109,6 @@ class Thing(object):
 
 
 class File(Thing):
-
     def __init__(self, root, path):
         super().__init__(root, path)
         self.files = [self]
@@ -131,7 +124,6 @@ class File(Thing):
 
 
 class Dir(Thing):
-
     def __init__(self, root, path):
         super().__init__(root, path)
         self.files = list()
@@ -158,13 +150,13 @@ def find_files(roots, files_store):
                 if is_ignored(dir):
                     dirs.remove(dir)
                     continue
-                path = j(top, dir)[len(root) + 1:]
+                path = j(top, dir)[len(root) + 1 :]
                 files_store[path] = Dir(root, path)
                 _add_path_to_dirs(files_store, files_store[path])
             for file in files:
                 if is_ignored(file):
                     continue
-                path = j(top, file)[len(root) + 1:]
+                path = j(top, file)[len(root) + 1 :]
                 files_store[path] = File(root, path)
                 _add_path_to_dirs(files_store, files_store[path])
 
@@ -264,27 +256,29 @@ def show_info():
 
 ##############################################################################
 
-ARGS = argparse.ArgumentParser(formatter_class=
-                               argparse.ArgumentDefaultsHelpFormatter)
-ARGS.add_argument("tmpl",
-                  nargs="?",
-                  help="""template to make (file,dir,project,..). If tmpl is exact
+ARGS = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+ARGS.add_argument(
+    "tmpl",
+    nargs="?",
+    help="""template to make (file,dir,project,..). If tmpl is exact
                   match the template will be made with template basename. If tmpl
                   is partial match, matching templates will be listed. If tmpl is
-                  not given, all templates will be listed.""")
-ARGS.add_argument("dest",
-                  nargs="?",
-                  help="thing (file,dir,project,..) to create")
-ARGS.add_argument("-d", "--debug",
-                  action="store_true",
-                  help="set debugging on")
-ARGS.add_argument("-i", "--info",
-                  action="store_true",
-                  help="show operation information. list jinja2 context variables.")
-ARGS.add_argument("--context",
-                  metavar="FILE",
-                  default=CTRL_CTX_FILE,
-                  help="Context variable file".format(CTRL_CTX_FILE))
+                  not given, all templates will be listed.""",
+)
+ARGS.add_argument("dest", nargs="?", help="thing (file,dir,project,..) to create")
+ARGS.add_argument("-d", "--debug", action="store_true", help="set debugging on")
+ARGS.add_argument(
+    "-i",
+    "--info",
+    action="store_true",
+    help="show operation information. list jinja2 context variables.",
+)
+ARGS.add_argument(
+    "--context",
+    metavar="FILE",
+    default=CTRL_CTX_FILE,
+    help="Context variable file".format(CTRL_CTX_FILE),
+)
 
 
 def main():
@@ -293,8 +287,9 @@ def main():
     if args.debug:
         logging.getLogger().setLevel(logging.DEBUG)
     global _jenv
-    _jenv = jinja2.Environment(loader=jinja2.FunctionLoader(load_tmpl),
-                               undefined=jinja2.StrictUndefined)
+    _jenv = jinja2.Environment(
+        loader=jinja2.FunctionLoader(load_tmpl), undefined=jinja2.StrictUndefined
+    )
     roots = find_tmpl_roots()
     find_files(roots, _files)
     fill_ctx(_ctx)
