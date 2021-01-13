@@ -8,7 +8,7 @@ from .fixtures import mkprimary, mkerror, mkroots
 
 def test_find_mk_files(mkroots):
     for location in mk.find.find_mk_files(
-        [mkroots["base"]["."], mkroots["other"]["."]], [".git"]
+        [mkroots["base"]["."].path_root, mkroots["other"]["."].path_root], [".git"]
     ):
         assert location.path_rel in (
             Path("primary.mk.yaml"),
@@ -19,6 +19,6 @@ def test_find_mk_files(mkroots):
 
 def test_find_mk_sources_from_roots(mkroots):
     for source in mk.find.find_mk_sources_from_roots(
-        [mkroots["base"]["."], mkroots["other"]["."]], []
+        [mkroots["base"]["."].path_root, mkroots["other"]["."].path_root], []
     ):
-        assert source.source in ("primary_file", "other_source")
+        assert source.source in ("primary_file", "other_source", "combined")

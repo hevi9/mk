@@ -15,7 +15,7 @@ def test_primary_source(mkroots):
     for source in mk.source.make_sources_from_file_yaml(
         Location(path_root=path_root, path_rel=path_rel)
     ):
-        assert source.source in ("primary_file", "other_source")
+        assert source.source in ("primary_file", "other_source", "combined")
         assert str(source.location.path_abs).endswith("primary.mk.yaml")
         assert type(source.make) is list
 
