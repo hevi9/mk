@@ -1,8 +1,9 @@
 import shlex
 import subprocess
+from .types import Runnable
 
 
-class Shell:
+class Shell(Runnable):
     def __init__(self, cmd_text):
         self.cmd_text = cmd_text
 

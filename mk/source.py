@@ -1,7 +1,7 @@
 from pathlib import Path
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
-from typing import Iterable
+from typing import Iterable, List
 
 # noinspection Mypy
 import strictyaml
@@ -13,25 +13,46 @@ from .shell import Shell
 @dataclass
 class Source:
     source: str
-    make: Iterable[Shell]
     location: Location
+    make: List[Shell] = field(default_factory=list)
 
     @property
     def id(self):
         return str(self.location.path_rel.parent / self.source).replace("\\", "/")
 
 
-def make_source_from_item(item: dict, location: Location) -> Source:
-    return Source(
+def _make_shell(make_item: dict):
+    return Shell(make_item["shell"])
+
+
+MAKE_ITEM_MAP = {
+    "shell": _make_shell,
+    "use": None,
+}
+
+
+def make_source_from_dict(item: dict, location: Location) -> Source:
+    """ """
+    source = Source(
         source=item["source"],
-        make=[Shell(i) for i in item["make"]],
         location=location,
     )
-
-
-def make_sources_from_data(data: Iterable, location: Location) -> Iterable[Source]:
-    for item in data:
-        yield make_source_from_item(item, location)
+    make_list = item["make"]
+    for make_item in make_list:
+        if type(make_item) is str:
+            make_item = {"shell": make_item}
+        elif type(make_item) is dict:
+            pass
+        else:
+            raise TypeError(f"Invalid make item type {type(make_item)}")
+        make_type = make_item.keys() & MAKE_ITEM_MAP.keys()
+        if len(make_type) < 1:
+            raise ValueError("Missing make type")
+        if len(make_type) > 1:
+            raise ValueError(f"Conflicting make types {make_type}")
+        make_type = make_type.pop()
+        source.make.append(MAKE_ITEM_MAP[make_type](make_item))
+    return source
 
 
 def make_sources_from_file_yaml(location: Location) -> Iterable[Source]:
@@ -40,5 +61,5 @@ def make_sources_from_file_yaml(location: Location) -> Iterable[Source]:
         data = strictyaml.load(text, label=str(location.path_abs)).data
         if not type(data) is list:
             raise TypeError(f"not a list {data}")
-        for source in make_sources_from_data(data, location):
-            yield source
+        for item in data:
+            yield make_source_from_dict(item, location)

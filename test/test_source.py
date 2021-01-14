@@ -1,5 +1,4 @@
 from ruamel.yaml.scanner import ScannerError
-from textwrap import dedent
 import pytest
 import mk.source
 from mk.index import Index
@@ -34,13 +33,14 @@ def test_error_1(mkroots):
 
 
 def test_source_run(mkroot, capfd):
-    path_root, path_rel = mkroot.have(
+    mkroot.have(
         "sample/.mk.yaml",
         """            
         -   source: echo_test
             make:
                 - echo testing1
                 - echo testing2
+                - shell: echo testing3
         """,
     )
     index = Index()
@@ -49,4 +49,53 @@ def test_source_run(mkroot, capfd):
     run(source)
     out, err = capfd.readouterr()
     lines = out.split()
-    assert lines == ["testing1", "testing2"]
+    assert lines == ["testing1", "testing2", "testing3"]
+
+
+def _test_source_make_use(mkroot):
+    path_root, path_rel = mkroot.have(
+        "test/source/make_use.mk.yaml",
+        """                    
+        -   source: super-source
+            make:
+                - use: sub-source-1
+                - use: sub-source-2
+                - echo super-source
+        -   source: sub-source-1
+            make:
+                - echo sub-source-1
+        -   source: sub-source-2
+            make:
+                - echo sub-source-2
+        """,
+    )
+    location = Location(path_root, path_rel)
+
+
+def _test_source_run_with_use(mkroot, capfd):
+    """
+    TODO:
+    """
+    mkroot.have(
+        "sample/sub-source-use.mk.yaml",
+        """                    
+        -   source: super-source
+            make:
+                - use: sub-source-1
+                - use: sub-source-2
+                - echo super-source
+        -   source: sub-source-1
+            make:
+                - echo sub-source-1
+        -   source: sub-source-2
+            make:
+                - echo sub-source-2
+        """,
+    )
+    index = Index()
+    update_index_from_roots(index, [mkroot.path_root], [])
+    source = index.find("sample/super-source")
+    run(source)
+    out, err = capfd.readouterr()
+    lines = out.split()
+    assert lines == ["sub-source-1", "sub-source-2", "super-source"]
