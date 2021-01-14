@@ -5,7 +5,7 @@ from mk.index import Index
 from mk.location import Location
 from mk.run import run
 from mk.find import update_index_from_roots
-
+from mk.source_build import make_sources_from_file_yaml
 
 # noinspection PyUnresolvedReferences
 from .fixtures import mkprimary, mkerror, mkroots, mkroot
@@ -13,7 +13,7 @@ from .fixtures import mkprimary, mkerror, mkroots, mkroot
 
 def test_primary_source(mkroots):
     path_root, path_rel = mkroots["base"]["primary.mk.yaml"]
-    for source in mk.source.make_sources_from_file_yaml(
+    for source in make_sources_from_file_yaml(
         Location(path_root=path_root, path_rel=path_rel)
     ):
         assert source.source in ("primary_file", "other_source", "combined")
@@ -24,7 +24,7 @@ def test_primary_source(mkroots):
 def test_error_1(mkroots):
     path_root, path_rel = mkroots["errors"]["error1.mk.yaml"]
     with pytest.raises(ScannerError) as ex:
-        for _ in mk.source.make_sources_from_file_yaml(
+        for _ in make_sources_from_file_yaml(
             Location(path_root=path_root, path_rel=path_rel)
         ):
             pass
@@ -35,7 +35,7 @@ def test_error_1(mkroots):
 def test_source_run(mkroot, capfd):
     mkroot.have(
         "sample/.mk.yaml",
-        """            
+        """
         -   source: echo_test
             make:
                 - echo testing1
@@ -55,7 +55,7 @@ def test_source_run(mkroot, capfd):
 def _test_source_make_use(mkroot):
     path_root, path_rel = mkroot.have(
         "test/source/make_use.mk.yaml",
-        """                    
+        """
         -   source: super-source
             make:
                 - use: sub-source-1
@@ -78,7 +78,7 @@ def _test_source_run_with_use(mkroot, capfd):
     """
     mkroot.have(
         "sample/sub-source-use.mk.yaml",
-        """                    
+        """
         -   source: super-source
             make:
                 - use: sub-source-1
