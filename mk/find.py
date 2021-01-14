@@ -40,3 +40,5 @@ def update_index_from_roots(
 ) -> None:
     for source in find_mk_sources_from_roots(roots, ignore):
         index.add_source(source)
+    for source in index.list():
+        source.update(index)

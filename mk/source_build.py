@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Iterable, Mapping
 
 import strictyaml
 
@@ -8,13 +8,17 @@ from .shell import Shell
 from .use import Use
 
 
-def _make_shell(make_item: dict):
+def _make_shell(_: Source, make_item: dict):
     return Shell(make_item["shell"])
+
+
+def _make_use(source: Source, make_item: dict):
+    return Use(source, make_item["use"])
 
 
 MAKE_ITEM_MAP = {
     "shell": _make_shell,
-    "use": None,
+    "use": _make_use,
 }
 
 
@@ -28,7 +32,7 @@ def make_source_from_dict(item: dict, location: Location) -> Source:
     for make_item in make_list:
         if type(make_item) is str:
             make_item = {"shell": make_item}
-        elif type(make_item) is dict:
+        elif isinstance(make_item, Mapping):
             pass
         else:
             raise TypeError(f"Invalid make item type {type(make_item)}")
@@ -38,7 +42,7 @@ def make_source_from_dict(item: dict, location: Location) -> Source:
         if len(make_type) > 1:
             raise ValueError(f"Conflicting make types {make_type}")
         make_type = make_type.pop()
-        source.make.append(MAKE_ITEM_MAP[make_type](make_item))
+        source.make.append(MAKE_ITEM_MAP[make_type](source, make_item))
     return source
 
 

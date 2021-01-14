@@ -1,6 +1,5 @@
 from ruamel.yaml.scanner import ScannerError
 import pytest
-import mk.source
 from mk.index import Index
 from mk.location import Location
 from mk.run import run
@@ -52,32 +51,9 @@ def test_source_run(mkroot, capfd):
     assert lines == ["testing1", "testing2", "testing3"]
 
 
-def _test_source_make_use(mkroot):
-    path_root, path_rel = mkroot.have(
-        "test/source/make_use.mk.yaml",
-        """
-        -   source: super-source
-            make:
-                - use: sub-source-1
-                - use: sub-source-2
-                - echo super-source
-        -   source: sub-source-1
-            make:
-                - echo sub-source-1
-        -   source: sub-source-2
-            make:
-                - echo sub-source-2
-        """,
-    )
-    location = Location(path_root, path_rel)
-
-
-def _test_source_run_with_use(mkroot, capfd):
-    """
-    TODO:
-    """
+def test_source_make_use(mkroot, capfd):
     mkroot.have(
-        "sample/sub-source-use.mk.yaml",
+        "test/source/make_use.mk.yaml",
         """
         -   source: super-source
             make:
@@ -94,7 +70,7 @@ def _test_source_run_with_use(mkroot, capfd):
     )
     index = Index()
     update_index_from_roots(index, [mkroot.path_root], [])
-    source = index.find("sample/super-source")
+    source = index.find("test/source/super-source")
     run(source)
     out, err = capfd.readouterr()
     lines = out.split()

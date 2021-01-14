@@ -1,18 +1,25 @@
-from typing import Iterable, List
-
+from typing import Iterable
 from .types import Runnable
-from dataclasses import dataclass, field
 from .source import Source
 from .run import run
+from .index import Index
 
 
-@dataclass
 class Use(Runnable):
     source: Source
-    use_source: Source = None
-    _use_source: Source = field(init=False, repr=False)
+    use_source_name: str
+    _use_source: Source = None
+
+    def __init__(self, source: Source, use_source_name: str):
+        self.source = source
+        self.use_source_name = use_source_name
+
+    def update(self, index: Index) -> None:
+        self.use_source = index.find_from(self.use_source_name, self.source)
 
     def run(self) -> None:
+        if not self.use_source:
+            raise RuntimeError("use_source is not set")
         run(self.use_source)
 
     def programs(self) -> Iterable[str]:
