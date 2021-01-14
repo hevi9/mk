@@ -1,5 +1,3 @@
-# run shell
-
 import shlex
 import subprocess
 

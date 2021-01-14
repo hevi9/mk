@@ -1,5 +1,6 @@
 import pytest
 from pathlib import Path
+from textwrap import dedent
 
 from typing import Dict, Union, Tuple
 
@@ -38,6 +39,7 @@ class Root:
         path_rel = Path(path_rel)
         path_abs = self.path_root / path_rel
         path_abs.parent.mkdir(parents=True, exist_ok=True)
+        text = dedent(text)
         with open(path_abs, "w") as fo:
             fo.write(text)
         return self.path_root, path_rel

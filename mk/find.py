@@ -4,6 +4,7 @@ from typing import Iterable
 
 from .location import Location
 from .source import Source, make_sources_from_file_yaml
+from .index import Index
 
 MK_GLOB = ("*.mk.yaml", "*.mk.yml")
 
@@ -31,3 +32,10 @@ def find_mk_sources_from_roots(
 ) -> Iterable[Source]:
     for location in find_mk_files(roots, ignore):
         yield from make_sources_from_file_yaml(location)
+
+
+def update_index_from_roots(
+    index: Index, roots: Iterable[Path], ignore: Iterable[str]
+) -> None:
+    for source in find_mk_sources_from_roots(roots, ignore):
+        index.add_source(source)

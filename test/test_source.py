@@ -1,13 +1,15 @@
 from ruamel.yaml.scanner import ScannerError
-
+from textwrap import dedent
 import pytest
 import mk.source
 from mk.index import Index
 from mk.location import Location
 from mk.run import run
+from mk.find import update_index_from_roots
+
 
 # noinspection PyUnresolvedReferences
-from .fixtures import mkprimary, mkerror, mkroots
+from .fixtures import mkprimary, mkerror, mkroots, mkroot
 
 
 def test_primary_source(mkroots):
@@ -31,12 +33,23 @@ def test_error_1(mkroots):
     assert "error1.mk.yaml" in msg
 
 
-def test_source_run(mkroots):
-    path_root, path_rel = mkroots["base"]["primary.mk.yaml"]
+def test_source_run(mkroot):
+    path_root, path_rel = mkroot.have(
+        "sample/mk.yaml",
+        """            
+        source: echo_test
+        make:
+            - echo testing
+        """,
+    )
     index = Index()
-    for source in mk.source.make_sources_from_file_yaml(
-        Location(path_root=path_root, path_rel=path_rel)
-    ):
-        index.add_source(source)
-    source = index.find("primary_file")
-    run(source)
+    update_index_from_roots(index, [mkroot.path_root], [])
+
+    # path_root, path_rel = mkroots["base"]["primary.mk.yaml"]
+    # index = Index()
+    # for source in mk.source.make_sources_from_file_yaml(
+    #     Location(path_root=path_root, path_rel=path_rel)
+    # ):
+    #     index.add_source(source)
+    # source = index.find("primary_file")
+    # run(source)
