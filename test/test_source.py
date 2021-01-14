@@ -33,23 +33,20 @@ def test_error_1(mkroots):
     assert "error1.mk.yaml" in msg
 
 
-def test_source_run(mkroot):
+def test_source_run(mkroot, capfd):
     path_root, path_rel = mkroot.have(
-        "sample/mk.yaml",
+        "sample/.mk.yaml",
         """            
-        source: echo_test
-        make:
-            - echo testing
+        -   source: echo_test
+            make:
+                - echo testing1
+                - echo testing2
         """,
     )
     index = Index()
     update_index_from_roots(index, [mkroot.path_root], [])
-
-    # path_root, path_rel = mkroots["base"]["primary.mk.yaml"]
-    # index = Index()
-    # for source in mk.source.make_sources_from_file_yaml(
-    #     Location(path_root=path_root, path_rel=path_rel)
-    # ):
-    #     index.add_source(source)
-    # source = index.find("primary_file")
-    # run(source)
+    source = index.find("sample/echo_test")
+    run(source)
+    out, err = capfd.readouterr()
+    lines = out.split()
+    assert lines == ["testing1", "testing2"]
