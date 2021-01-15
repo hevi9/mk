@@ -5,6 +5,7 @@ from mk.location import Location
 from mk.run import run
 from mk.find import update_index_from_roots
 from mk.source_build import make_sources_from_file_yaml
+from mk.ui import ui
 
 # noinspection PyUnresolvedReferences
 from .fixtures import mkprimary, mkerror, mkroots, mkroot
@@ -32,6 +33,7 @@ def test_error_1(mkroots):
 
 
 def test_source_run(mkroot, capfd):
+    ui.is_verbose = False
     mkroot.have(
         "sample/.mk.yaml",
         """
@@ -52,6 +54,7 @@ def test_source_run(mkroot, capfd):
 
 
 def test_source_make_use(mkroot, capfd):
+    ui.is_verbose = False
     mkroot.have(
         "test/source/make_use.mk.yaml",
         """
@@ -66,6 +69,30 @@ def test_source_make_use(mkroot, capfd):
         -   source: sub-source-2
             make:
                 - echo sub-source-2
+        """,
+    )
+    index = Index()
+    update_index_from_roots(index, [mkroot.path_root], [])
+    source = index.find("test/source/super-source")
+    run(source)
+    out, err = capfd.readouterr()
+    lines = out.split()
+    assert lines == ["sub-source-1", "sub-source-2", "super-source"]
+
+
+def _test_source_make_when(mkroot, capfd):
+    mkroot.have(
+        "test/source/make_use.mk.yaml",
+        """
+        - source: ls2
+          when: any
+          make:
+            when: windows
+            make:
+              - dir
+            when: linux
+            make:
+              - ls -la        
         """,
     )
     index = Index()

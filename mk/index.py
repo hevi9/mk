@@ -8,6 +8,10 @@ class Index(types.Index):
     def __init__(self):
         self._source_map = {}
 
+    @property
+    def source_map(self) -> dict:
+        return self._source_map
+
     def add_source(self, source: Source) -> None:
         if self._source_map.get(source.id):
             raise DuplicateSourceError

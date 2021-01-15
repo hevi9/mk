@@ -3,6 +3,7 @@ import subprocess
 
 from .index import Index
 from .types import Runnable
+from .ui import ui
 
 
 class Shell(Runnable):
@@ -10,6 +11,7 @@ class Shell(Runnable):
         self.cmd_text = cmd_text
 
     def run(self):
+        ui.run("run {cmd}", cmd=self.cmd_text)
         subprocess.run(self.cmd_text, shell=True).check_returncode()
 
     def programs(self):

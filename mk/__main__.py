@@ -1,14 +1,22 @@
 import click
 import sys
-from loguru import logger
 from pathlib import Path
+from rich.table import Table
+
+from .ui import ui, console
+from .index import Index
+from .find import update_index_from_roots
+from .run import run
 
 
-def find_sources(paths):
-    pass
-
-
-@click.command()
+@click.group()
+@click.option(
+    "--verbose",
+    type=click.BOOL,
+    default=True,
+    help="Show verbose messages.",
+    show_default=True,
+)
 @click.option(
     "paths",
     "--path",
@@ -16,17 +24,61 @@ def find_sources(paths):
     multiple=True,
     envvar="MKPATH",
     type=click.Path(),
-    help="Path(s) to find sources",
+    help="Path(s) to find sources. Can be given multiple times. Environment variable MKPATH can be used also to define source paths",
+    show_default=True,
 )
-@click.argument("name")
-def cli(paths, name):
-    sources = find_sources(paths)
-    # source = get_name_from_sources(name, sources)
-    # target = Target(source, target_name)
-    # validate(target)
-    # make()
-    click.echo(f"{paths}")
-    pass
+@click.pass_context
+def cli(ctx, verbose, paths):
+    """ TODO: cli description """
+    ctx.ensure_object(dict)
+    ui.is_verbose = verbose
+    ctx.obj["paths"] = paths
+
+
+@cli.command()
+@click.argument("source_name")
+@click.argument("target_name")
+@click.pass_context
+def new(ctx, source_name, target_name):
+    """ Make new target from given source. """
+    paths = ctx.obj["paths"]
+    try:
+        index = Index()
+        update_index_from_roots(index, paths, [])
+        ui.talk(
+            "Have {num} sources in {paths}",
+            num=len(index.source_map),
+            paths=",".join(str(p) for p in paths),
+        )
+        source = index.find(source_name)
+        run(source)
+    except KeyError as ex:
+        ui.error_exit("Source not found {ex}", ex=ex)
+    except Exception as ex:
+        ui.error_exit("{ex}", ex=ex)
+
+
+@cli.command()
+@click.pass_context
+def list(ctx):
+    """ List sources. """
+    paths = ctx.obj["paths"]
+    try:
+        index = Index()
+        update_index_from_roots(index, paths, [])
+        ui.talk(
+            "Have {num} sources in {paths}",
+            num=len(index.source_map),
+            paths=",".join(str(p) for p in paths),
+        )
+        table = Table(box=None)
+        table.add_column("Source")
+        table.add_column("Description")
+        for source in sorted(index.list(), key=lambda s: s.id):
+            table.add_row(source.id, ".. title ..")
+        console.print(table)
+    except Exception as ex:
+        ui.error_exit("{ex}", ex=ex)
 
 
 if __name__ == "__main__":
