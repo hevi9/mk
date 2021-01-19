@@ -7,6 +7,7 @@ from .ui import ui, console
 from .index import Index
 from .find import update_index_from_roots
 from .run import run
+from .validate import validate
 
 
 @click.group()
@@ -51,7 +52,9 @@ def new(ctx, source_name, target_name):
             paths=",".join(str(p) for p in paths),
         )
         source = index.find(source_name)
-        run(source)
+        context = {"target": target_name}
+        validate(context)
+        run(source, context)
     except KeyError as ex:
         ui.error_exit("Source not found {ex}", ex=ex)
     except Exception as ex:

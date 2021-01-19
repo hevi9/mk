@@ -1,22 +1,12 @@
-from dataclasses import dataclass
-
-
-# from pathlib import Path
-
-
-# @dataclass
-# class FileScannerError(Exception):
-#     problem: str
-#     context: str
-#     text: str
-#     line: int
-#     column: int
-#     path_root: Path
-#     path_rel: Path
 from mk.location import Location
 
 
-class DuplicateSourceError(Exception):
+class MkError(Exception):
+    def __init__(self, msg: str):
+        super().__init__(msg)
+
+
+class DuplicateSourceError(MkError):
     location: Location
     id: str
 
@@ -24,3 +14,8 @@ class DuplicateSourceError(Exception):
         super().__init__(f"Duplicate {id} in {location}: {msg}")
         self.location = location
         self.id = id
+
+
+class ValidateError(MkError):
+    def __init__(self, msg):
+        super().__init__(msg)
