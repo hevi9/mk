@@ -13,7 +13,7 @@ def _make_shell(_: Source, make_item: dict):
 
 
 def _make_use(source: Source, make_item: dict):
-    return Use(source, make_item["use"])
+    return Use(source, make_item["use"], make_item.get("vars", {}))
 
 
 MAKE_ITEM_MAP = {

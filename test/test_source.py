@@ -6,6 +6,7 @@ from mk.run import run
 from mk.find import update_index_from_roots
 from mk.source_build import make_sources_from_file_yaml
 from mk.ui import ui
+from mk.jinja2env import env
 
 # noinspection PyUnresolvedReferences
 from .fixtures import mkprimary, mkerror, mkroots, mkroot
@@ -47,7 +48,8 @@ def test_source_run(mkroot, capfd):
     index = Index()
     update_index_from_roots(index, [mkroot.path_root], [])
     source = index.find("sample/echo_test")
-    run(source)
+    context = {}
+    run(source, context)
     out, err = capfd.readouterr()
     lines = out.split()
     assert lines == ["testing1", "testing2", "testing3"]
@@ -74,31 +76,51 @@ def test_source_make_use(mkroot, capfd):
     index = Index()
     update_index_from_roots(index, [mkroot.path_root], [])
     source = index.find("test/source/super-source")
-    run(source)
+    context = {}
+    run(source, context)
     out, err = capfd.readouterr()
     lines = out.split()
     assert lines == ["sub-source-1", "sub-source-2", "super-source"]
 
 
-def _test_source_make_when(mkroot, capfd):
+def test_source_make_render(mkroot, capfd):
+    ui.is_verbose = False
     mkroot.have(
-        "test/source/make_use.mk.yaml",
+        "test/source/make_render.mk.yaml",
         """
-        - source: ls2
-          when: any
-          make:
-            when: windows
+        -   source: super-source
             make:
-              - dir
-            when: linux
+                -   echo super-source ${target}
+                -   use: sub-source-frontend 
+                    vars:
+                        target: ${target}/frontend                    
+                -   use: sub-source-backend 
+                    vars:
+                        target: ${target}/backend                    
+                                
+        -   source: sub-source-backend
             make:
-              - ls -la        
+                -   echo sub-source-backend ${target}
+
+        -   source: sub-source-frontend
+            make:
+                -   echo sub-source-frontend ${target}
         """,
     )
     index = Index()
+    context = {
+        "target": "target-dir",
+    }
     update_index_from_roots(index, [mkroot.path_root], [])
     source = index.find("test/source/super-source")
-    run(source)
+    run(source, context)
     out, err = capfd.readouterr()
     lines = out.split()
-    assert lines == ["sub-source-1", "sub-source-2", "super-source"]
+    assert lines == [
+        "super-source",
+        "target-dir",
+        "sub-source-frontend",
+        "target-dir/frontend",
+        "sub-source-backend",
+        "target-dir/backend",
+    ]

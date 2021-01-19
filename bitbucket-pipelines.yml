@@ -9,10 +9,13 @@ pipelines:
   default:
     - parallel:
       - step:
-          name: Test
+          name: Test mk
           caches:
             - pip
+            - poetry
           script:
-            - if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-            - pip install pytest assertpy
-            - pytest -v test/* --junitxml=test-reports/report.xml
+            - pip install poetry
+            - poetry install -vv
+            - poetry run pytest -v test/* --junitxml=test-reports/report.xml
+
+

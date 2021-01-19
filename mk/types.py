@@ -41,7 +41,7 @@ class Updateable(ABC):
 
 class Runnable(Updateable):
     @abstractmethod
-    def run(self) -> None:
+    def run(self, context: dict) -> None:
         """ """
 
     @abstractmethod
