@@ -3,7 +3,7 @@ from .types import Runnable
 from .source import Source
 from .run import run
 from .index import Index
-from .jinja2env import render
+from .context import render
 
 
 class Use(Runnable):

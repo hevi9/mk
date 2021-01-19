@@ -4,7 +4,7 @@ import subprocess
 from .index import Index
 from .types import Runnable
 from .ui import ui
-from .jinja2env import render
+from .context import render
 
 
 class Shell(Runnable):

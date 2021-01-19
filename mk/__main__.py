@@ -52,7 +52,10 @@ def new(ctx, source_name, target_name):
             paths=",".join(str(p) for p in paths),
         )
         source = index.find(source_name)
-        context = {"target": target_name}
+        context = {
+            "name": target_name,
+            "target": target_name,
+        }
         validate(context)
         run(source, context)
     except KeyError as ex:

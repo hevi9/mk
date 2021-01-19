@@ -6,7 +6,7 @@ from mk.run import run
 from mk.find import update_index_from_roots
 from mk.source_build import make_sources_from_file_yaml
 from mk.ui import ui
-from mk.jinja2env import env
+from mk.context import env
 
 # noinspection PyUnresolvedReferences
 from .fixtures import mkprimary, mkerror, mkroots, mkroot
@@ -91,13 +91,13 @@ def test_source_make_render(mkroot, capfd):
         -   source: super-source
             make:
                 -   echo super-source ${target}
-                -   use: sub-source-frontend 
+                -   use: sub-source-frontend
                     vars:
-                        target: ${target}/frontend                    
-                -   use: sub-source-backend 
+                        target: ${target}/frontend
+                -   use: sub-source-backend
                     vars:
-                        target: ${target}/backend                    
-                                
+                        target: ${target}/backend
+
         -   source: sub-source-backend
             make:
                 -   echo sub-source-backend ${target}
