@@ -12,7 +12,6 @@ pipelines:
           name: Test mk
           caches:
             - pip
-            - poetry
           script:
             - pip install poetry
             - poetry install -vv
