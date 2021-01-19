@@ -1,9 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import Iterable
 
+from mk.location import Location
+
 
 class Source(ABC):
     """ """
+
+    location: Location
 
     @property
     @abstractmethod

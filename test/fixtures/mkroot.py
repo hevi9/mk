@@ -45,7 +45,7 @@ class Root:
         return self.path_root, path_rel
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def mkroot(tmp_path_factory) -> Root:
     return Root(tmp_path_factory.mktemp("root"))
 

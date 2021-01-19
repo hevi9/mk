@@ -14,7 +14,7 @@ class Index(types.Index):
 
     def add_source(self, source: Source) -> None:
         if self._source_map.get(source.id):
-            raise DuplicateSourceError
+            raise DuplicateSourceError("already exists", id=source.id, location=source)
         self._source_map[source.id] = source
 
     def list(self) -> Iterable[Source]:
