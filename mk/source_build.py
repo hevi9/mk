@@ -4,8 +4,8 @@ import strictyaml
 
 from mk.location import Location
 from .source import Source
-from .shell import Shell
-from .use import Use
+from .make_shell import Shell
+from .make_use import Use
 
 
 def _make_shell(_: Source, make_item: dict):

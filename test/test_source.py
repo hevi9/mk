@@ -124,3 +124,48 @@ def test_source_make_render(mkroot, capfd):
         "sub-source-backend",
         "target-dir/backend",
     ]
+
+
+def _test_source_make_cmd(mkroot, capfd):
+    ui.is_verbose = False
+    mkroot.have(
+        "test/source/make_cmd.mk.yaml",
+        """
+        -   source: cmd-source
+            make:
+            -   cmd: copy source-file target-file
+            -   cmd: copy source-tree target-tree
+            -   cmd: move source-tree target-tree
+            -   cmd: remove remove-tree-1
+        -   source: cmd-source-2
+            make:
+            -   copy: source-file target-file
+            -   copy: source-tree target-tree
+            -   move: source-tree target-tree
+            -   remove: remove-tree-1
+        """,
+    )
+
+
+def _test_source_make_file_update(mkroot, capfd):
+    ui.is_verbose = False
+    mkroot.have(
+        "test/source/make_cmd.mk.yaml",
+        """
+        -   source: cmd-update
+            make:
+            -   update: ${target}/tsconfig.json
+                value: |
+                    {
+                        "compilerOptions": {
+                            "module": "es6"
+                        }
+                    }
+        -   source: cmd-update-2
+            make:
+            -   update-json: ${target}/tsconfig.json
+                value:
+                    compilerOptions:
+                        module: es6
+        """,
+    )
