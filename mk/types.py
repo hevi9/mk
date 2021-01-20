@@ -4,7 +4,14 @@ from typing import Iterable
 from mk.location import Location
 
 
-class Source(ABC):
+class Updateable(ABC):
+    """ """
+
+    def update(self, index: "Index") -> None:
+        """ """
+
+
+class Source(Updateable):
     """ """
 
     location: Location
@@ -12,10 +19,6 @@ class Source(ABC):
     @property
     @abstractmethod
     def id(self) -> str:
-        """ """
-
-    @abstractmethod
-    def update(self, index: "Index") -> None:
         """ """
 
 
@@ -37,17 +40,13 @@ class Index(ABC):
         """ """
 
 
-class Updateable(ABC):
-    @abstractmethod
-    def update(self, index: Index) -> None:
-        """ """
-
-
 class Runnable(Updateable):
+    """ """
+
     @abstractmethod
     def run(self, context: dict) -> None:
         """ """
 
-    @abstractmethod
     def programs(self) -> Iterable[str]:
         """ """
+        return []

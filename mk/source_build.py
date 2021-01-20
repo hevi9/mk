@@ -2,10 +2,11 @@ from typing import Iterable, Mapping
 
 import strictyaml
 
-from mk.location import Location
+from .location import Location
 from .source import Source
 from .make_shell import Shell
 from .make_use import Use
+from .make_remove import Remove
 
 
 def _make_shell(_: Source, make_item: dict):
@@ -16,9 +17,14 @@ def _make_use(source: Source, make_item: dict):
     return Use(source, make_item["use"], make_item.get("vars", {}))
 
 
+def _make_remove(_: Source, make_item: dict):
+    return Remove(str(make_item["remove"]).split())
+
+
 MAKE_ITEM_MAP = {
     "shell": _make_shell,
     "use": _make_use,
+    "remove": _make_remove,
 }
 
 
