@@ -1,8 +1,9 @@
 import pytest
 from pathlib import Path
 from textwrap import dedent
-
+from contextlib import contextmanager
 from typing import Dict, Union, Tuple
+import os
 
 SOURCE_PRIMARY = """
 - source: primary_file
@@ -34,6 +35,22 @@ al dkaswdkas - SE
 class Root:
     def __init__(self, path_root: Path):
         self.path_root = path_root
+
+    @property
+    def path_abs(self):
+        return self.path_root.resolve()
+
+    @contextmanager
+    def cd(self, path: Union[Path, str]):
+        path = Path(path)
+        cwd_old = Path.cwd()
+        if not path.is_absolute():
+            path = self.path_root / path
+        try:
+            os.chdir(path)
+            yield path
+        finally:
+            os.chdir(cwd_old)
 
     def have(self, path_rel: Union[Path, str], text: str) -> Tuple[Path, Path]:
         path_rel = Path(path_rel)

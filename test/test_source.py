@@ -126,7 +126,67 @@ def test_source_make_render(mkroot, capfd):
     ]
 
 
-def _test_source_make_cmd(mkroot, capfd):
+def test_source_make_remove_file(mkroot, capfd):
+    ui.is_verbose = False
+    mkroot.have(
+        "test/source/make_remove_file.mk.yaml",
+        """
+        -   source: make-remove-file
+            make:
+            -   remove: to-be-removed.txt
+        """,
+    )
+    remove_root, remove_rel = mkroot.have("data/to-be-removed.txt", "DATA")
+    remove_file = remove_root / remove_rel
+    index = Index()
+    update_index_from_roots(index, [mkroot.path_root], [])
+    source = index.find("test/source/make-remove-file")
+    assert remove_file.is_file()
+    with mkroot.cd("data"):
+        run(source, {})
+    assert not remove_file.exists()
+
+
+def test_source_make_remove_tree(mkroot, capfd):
+    ui.is_verbose = False
+    mkroot.have(
+        "test/source/make_remove_tree.mk.yaml",
+        """
+        -   source: make-remove-tree
+            make:
+            -   remove: tree-to-be-removed
+        """,
+    )
+    mkroot.have("data/tree-to-be-removed/to-be-removed-1.txt", "DATA")
+    remove_root, remove_rel = mkroot.have(
+        "data/tree-to-be-removed/to-be-removed-2.txt", "DATA"
+    )
+    remove_dir = (remove_root / remove_rel).parent
+    index = Index()
+    update_index_from_roots(index, [mkroot.path_root], [])
+    source = index.find("test/source/make-remove-tree")
+    assert remove_dir.is_dir()
+    with mkroot.cd("data"):
+        run(source, {})
+    assert not remove_dir.exists()
+
+
+def _test_source_make_copy(mkroot, capfd):
+    ui.is_verbose = False
+    mkroot.have(
+        "test/source/make_copy.mk.yaml",
+        """
+        -   source: cmd-source
+            make:
+            -   cmd: copy source-file target-file
+            -   cmd: copy source-tree target-tree
+            -   cmd: move source-tree target-tree
+            -   cmd: remove remove-tree-1
+        """,
+    )
+
+
+def _test_source_make_move(mkroot, capfd):
     ui.is_verbose = False
     mkroot.have(
         "test/source/make_cmd.mk.yaml",
