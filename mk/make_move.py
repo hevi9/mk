@@ -20,4 +20,5 @@ class Move(Runnable):
         parts = text.split()
         src = parts[0]
         dst = parts[1]
+        ui.talk(f"Move {src} to {dst}")
         move(src, dst)

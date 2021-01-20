@@ -7,6 +7,7 @@ from .source import Source
 from .make_shell import Shell
 from .make_use import Use
 from .make_remove import Remove
+from .make_move import Move
 
 
 def _make_shell(_: Source, make_item: dict):
@@ -21,10 +22,15 @@ def _make_remove(_: Source, make_item: dict):
     return Remove(str(make_item["remove"]).split())
 
 
+def _make_move(_: Source, make_item: dict):
+    return Move(make_item["move"])
+
+
 MAKE_ITEM_MAP = {
     "shell": _make_shell,
     "use": _make_use,
     "remove": _make_remove,
+    "move": _make_move,
 }
 
 
