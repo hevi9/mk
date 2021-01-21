@@ -16,6 +16,16 @@ class DuplicateSourceError(MkError):
         self.id = id
 
 
+class FieldError(MkError):
+    location: Location
+    field: str
+
+    def __init__(self, msg, field: str, location: Location):
+        super().__init__(f"Error in field {field} in {location}: {msg}")
+        self.location = location
+        self.field = field
+
+
 class ValidateError(MkError):
     def __init__(self, msg):
         super().__init__(msg)

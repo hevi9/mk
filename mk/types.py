@@ -21,6 +21,10 @@ class Source(Updateable):
     def id(self) -> str:
         """ """
 
+    @abstractmethod
+    def run(self, context: dict) -> None:
+        """ """
+
 
 class Index(ABC):
     @abstractmethod

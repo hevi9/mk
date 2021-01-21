@@ -61,6 +61,12 @@ class Root:
             fo.write(text)
         return self.path_root, path_rel
 
+    def have_dir(self, path_rel: Union[Path, str]) -> Tuple[Path, Path]:
+        path_rel = Path(path_rel)
+        path_abs = self.path_root / path_rel
+        path_abs.mkdir(parents=True, exist_ok=True)
+        return self.path_root, path_rel
+
 
 @pytest.fixture(scope="function")
 def mkroot(tmp_path_factory) -> Root:

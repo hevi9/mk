@@ -21,4 +21,4 @@ def test_find_mk_sources_from_roots(mkroots):
     for source in mk.find.find_mk_sources_from_roots(
         [mkroots["base"]["."].path_root, mkroots["other"]["."].path_root], []
     ):
-        assert source.source in ("primary_file", "other_source", "combined")
+        assert source.name in ("primary_file", "other_source", "combined")

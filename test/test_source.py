@@ -17,7 +17,7 @@ def test_primary_source(mkroots):
     for source in make_sources_from_file_yaml(
         Location(path_root=path_root, path_rel=path_rel)
     ):
-        assert source.source in ("primary_file", "other_source", "combined")
+        assert source.name in ("primary_file", "other_source", "combined")
         assert str(source.location.path_abs).endswith("primary.mk.yaml")
         assert type(source.make) is list
 
@@ -91,9 +91,11 @@ def test_source_make_render(mkroot, capfd):
         -   source: super-source
             make:
                 -   echo super-source ${target}
+
                 -   use: sub-source-frontend
                     vars:
                         target: ${target}/frontend
+
                 -   use: sub-source-backend
                     vars:
                         target: ${target}/backend
@@ -222,7 +224,36 @@ def test_source_make_remove_tree_render_list(mkroot, capfd):
     assert not remove_dir.exists()
 
 
-def _test_source_make_copy(mkroot, capfd):
+def test_source_make_copy_tree(mkroot, capfd):
+    ui.is_verbose = False
+    mkroot.have(
+        "test/source/make_copy_tree.mk.yaml",
+        """
+        -   source: make-copy-tree
+            make:
+            -   copy: ${source.dir}/source-tree target-tree-1
+            -   copy:
+                    from: ${source.dir}/source-tree
+                    to: target-tree-2
+        """,
+    )
+    mkroot.have("test/source/source-tree/.gitignore", "DATA")
+    mkroot.have("test/source/source-tree/README.md", "DATA")
+    root_path, target_rel = mkroot.have_dir("test/target-area")
+    target_area = root_path / target_rel
+    #
+    index = Index()
+    update_index_from_roots(index, [mkroot.path_root], [])
+    source = index.find("test/source/make-copy-tree")
+    context = make_root_context("target-root")
+    with mkroot.cd(target_area):
+        run(source, context)
+    assert (target_area / "target-tree-1" / ".gitignore").exists()
+    assert (target_area / "target-tree-2" / ".gitignore").exists()
+
+
+@pytest.mark.skip(reason="TODO")
+def test_source_make_copy_file(mkroot, capfd):
     ui.is_verbose = False
     mkroot.have(
         "test/source/make_copy.mk.yaml",
@@ -237,7 +268,8 @@ def _test_source_make_copy(mkroot, capfd):
     )
 
 
-def _test_source_make_move(mkroot, capfd):
+@pytest.mark.skip(reason="TODO")
+def test_source_make_move(mkroot, capfd):
     ui.is_verbose = False
     mkroot.have(
         "test/source/make_cmd.mk.yaml",
@@ -258,7 +290,8 @@ def _test_source_make_move(mkroot, capfd):
     )
 
 
-def _test_source_make_file_update(mkroot, capfd):
+@pytest.mark.skip(reason="TODO")
+def test_source_make_file_update(mkroot, capfd):
     ui.is_verbose = False
     mkroot.have(
         "test/source/make_cmd.mk.yaml",

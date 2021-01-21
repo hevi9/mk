@@ -10,3 +10,6 @@ class Location:
     @property
     def path_abs(self):
         return self.path_root / self.path_rel
+
+    def __str__(self) -> str:
+        return str(self.path_abs)

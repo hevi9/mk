@@ -5,6 +5,7 @@ import jinja2
 env = jinja2.Environment(
     variable_start_string="${",
     variable_end_string="}",
+    undefined=jinja2.StrictUndefined,
 )
 
 
