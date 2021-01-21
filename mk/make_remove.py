@@ -2,11 +2,18 @@ from typing import Iterable, List, Any
 from pathlib import Path
 from shutil import rmtree
 import os
+import stat
 
 from .index import Index
 from .types import Runnable, Source
 from .ui import ui
 from .context import render
+
+
+def _remove_readonly(func, path, _):
+    """ Clear the readonly bit and reattempt the removal. """
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
 
 
 class Remove(Runnable):
@@ -38,7 +45,7 @@ class Remove(Runnable):
                 continue
             if path.is_dir():
                 ui.talk("remove tree {path}", path=path)
-                rmtree(path)
+                rmtree(path, onerror=_remove_readonly)
             else:
                 ui.talk("remove file {path}", path=path)
                 os.remove(path)
