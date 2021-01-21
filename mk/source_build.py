@@ -18,15 +18,14 @@ def _make_use(source: Source, make_item: dict):
     return Use(source, make_item["use"], make_item.get("vars", {}))
 
 
-def _make_move(_: Source, make_item: dict):
-    return Move(make_item["move"])
-
-
 MAKE_ITEM_MAP = {
     "shell": _make_shell,
     "use": _make_use,
     "remove": Remove,
-    "move": _make_move,
+    "move": Move,
+    # "copy": None,
+    # "mkdir": None,
+    # "update-config": None,
 }
 
 
