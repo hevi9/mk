@@ -6,7 +6,7 @@ from mk.run import run
 from mk.find import update_index_from_roots
 from mk.source_build import make_sources_from_file_yaml
 from mk.ui import ui
-from mk.context import env
+from mk.context import make_root_context
 
 # noinspection PyUnresolvedReferences
 from .fixtures import mkprimary, mkerror, mkroots, mkroot
@@ -168,6 +168,57 @@ def test_source_make_remove_tree(mkroot, capfd):
     assert remove_dir.is_dir()
     with mkroot.cd("data"):
         run(source, {})
+    assert not remove_dir.exists()
+
+
+def test_source_make_remove_tree_render(mkroot, capfd):
+    ui.is_verbose = False
+    mkroot.have(
+        "test/source/make_remove_tree.mk.yaml",
+        """
+        -   source: make-remove-tree
+            make:
+            -   remove: ${target}/tree-to-be-removed
+        """,
+    )
+    mkroot.have("data/target-root/tree-to-be-removed/to-be-removed-1.txt", "DATA")
+    remove_root, remove_rel = mkroot.have(
+        "data/target-root/tree-to-be-removed/to-be-removed-2.txt", "DATA"
+    )
+    remove_dir = (remove_root / remove_rel).parent
+    index = Index()
+    update_index_from_roots(index, [mkroot.path_root], [])
+    source = index.find("test/source/make-remove-tree")
+    context = make_root_context("target-root")
+    assert remove_dir.is_dir()
+    with mkroot.cd("data"):
+        run(source, context)
+    assert not remove_dir.exists()
+
+
+def test_source_make_remove_tree_render_list(mkroot, capfd):
+    ui.is_verbose = False
+    mkroot.have(
+        "test/source/make_remove_tree.mk.yaml",
+        """
+        -   source: make-remove-tree
+            make:
+            -   remove:
+                - ${target}/tree-to-be-removed
+        """,
+    )
+    mkroot.have("data/target-root/tree-to-be-removed/to-be-removed-1.txt", "DATA")
+    remove_root, remove_rel = mkroot.have(
+        "data/target-root/tree-to-be-removed/to-be-removed-2.txt", "DATA"
+    )
+    remove_dir = (remove_root / remove_rel).parent
+    index = Index()
+    update_index_from_roots(index, [mkroot.path_root], [])
+    source = index.find("test/source/make-remove-tree")
+    context = make_root_context("target-root")
+    assert remove_dir.is_dir()
+    with mkroot.cd("data"):
+        run(source, context)
     assert not remove_dir.exists()
 
 

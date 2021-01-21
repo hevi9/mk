@@ -18,10 +18,6 @@ def _make_use(source: Source, make_item: dict):
     return Use(source, make_item["use"], make_item.get("vars", {}))
 
 
-def _make_remove(_: Source, make_item: dict):
-    return Remove(str(make_item["remove"]).split())
-
-
 def _make_move(_: Source, make_item: dict):
     return Move(make_item["move"])
 
@@ -29,7 +25,7 @@ def _make_move(_: Source, make_item: dict):
 MAKE_ITEM_MAP = {
     "shell": _make_shell,
     "use": _make_use,
-    "remove": _make_remove,
+    "remove": Remove,
     "move": _make_move,
 }
 
