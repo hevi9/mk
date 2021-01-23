@@ -18,7 +18,6 @@ class Shell(Runnable):
 
     def programs(self):
         parts = shlex.split(self.cmd_text)
-        pass
 
     def update(self, index: Index) -> None:
-        pass
+        ...

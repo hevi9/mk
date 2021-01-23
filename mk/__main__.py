@@ -1,3 +1,8 @@
+# pylint: disable=redefined-builtin
+# pylint: disable=unexpected-keyword-arg, no-value-for-parameter
+# pylint: disable=board-except
+
+
 import click
 import sys
 from pathlib import Path
@@ -88,4 +93,5 @@ def list(ctx):
 
 
 if __name__ == "__main__":
+    # pylint: disable=unexpected-keyword-arg, no-value-for-parameter
     cli(prog_name="{} -m {}".format(sys.executable, __package__))
