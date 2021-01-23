@@ -1,4 +1,14 @@
-# Development
+# mk - Program runner to make new projects and files.
+
+# Status
+
+Experimental
+
+# Install
+
+for development
+
+## Clone repo 
 
 ## Install poetry
 
@@ -7,6 +17,3 @@
 > poetry install
 ```
 
-## Setup black
-
-https://github.com/psf/black/blob/master/docs/editor_integration.md

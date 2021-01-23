@@ -8,8 +8,6 @@ from .make_shell import Shell
 from .make_use import Use
 from .make_remove import Remove
 from .make_move import Move
-from .make_copy import Copy
-from .ex import FieldError
 
 
 def _make_shell(_: Source, make_item: dict):
@@ -28,7 +26,6 @@ MAKE_ITEM_MAP = {
     "shell": _make_shell,
     "use": _make_use,
     "remove": Remove,
-    "copy": Copy,
     "move": _make_move,
 }
 
@@ -36,7 +33,7 @@ MAKE_ITEM_MAP = {
 def make_source_from_dict(item: dict, location: Location) -> Source:
     """ """
     source = Source(
-        name=item["source"],
+        source=item["source"],
         location=location,
     )
     make_list = item["make"]
@@ -49,7 +46,7 @@ def make_source_from_dict(item: dict, location: Location) -> Source:
             raise TypeError(f"Invalid make item type {type(make_item)}")
         make_type = make_item.keys() & MAKE_ITEM_MAP.keys()
         if len(make_type) < 1:
-            raise ValueError(f"Missing make type for {make_item} in {location}")
+            raise ValueError("Missing make type")
         if len(make_type) > 1:
             raise ValueError(f"Conflicting make types {make_type}")
         make_type = make_type.pop()
