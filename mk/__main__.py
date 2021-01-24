@@ -1,17 +1,17 @@
 # pylint: disable=redefined-builtin
 # pylint: disable=unexpected-keyword-arg, no-value-for-parameter
-# pylint: disable=board-except
 
 
-import click
 import sys
 from pathlib import Path
+
+import click
 from rich.table import Table
 
-from .ui import ui, console
-from .index import Index
 from .find import update_index_from_roots
+from .index import Index
 from .run import run
+from .ui import console, ui
 from .validate import validate
 
 
@@ -30,7 +30,10 @@ from .validate import validate
     multiple=True,
     envvar="MKPATH",
     type=click.Path(),
-    help="Path(s) to find sources. Can be given multiple times. Environment variable MKPATH can be used also to define source paths",
+    help="""
+        Path(s) to find sources. Can be given multiple times. Environment
+        variable MKPATH can be used also to define source paths
+    """,
     show_default=True,
 )
 @click.pass_context

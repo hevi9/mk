@@ -1,7 +1,8 @@
 from typing import List
-from .location import Location
-from .types import Runnable, Index
+
 from . import types
+from .location import Location
+from .types import Index, Runnable
 
 
 class Source(types.Source):

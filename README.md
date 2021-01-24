@@ -8,7 +8,7 @@ Experimental
 
 for development
 
-## Clone repo 
+## Clone repo
 
 ## Install poetry
 

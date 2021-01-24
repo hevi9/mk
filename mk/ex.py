@@ -2,8 +2,7 @@ from mk.location import Location
 
 
 class MkError(Exception):
-    def __init__(self, msg: str):
-        super().__init__(msg)
+    """ """
 
 
 class DuplicateSourceError(MkError):
@@ -27,5 +26,4 @@ class FieldError(MkError):
 
 
 class ValidateError(MkError):
-    def __init__(self, msg):
-        super().__init__(msg)
+    """ """

@@ -1,7 +1,8 @@
 from typing import Iterable
+
+from . import types
 from .ex import DuplicateSourceError
 from .types import Source
-from . import types
 
 
 class Index(types.Index):

@@ -1,11 +1,12 @@
-from pathlib import Path
+# pylint: disable=undefined-loop-variable
 
+from pathlib import Path
 from typing import Iterable
 
+from .index import Index
 from .location import Location
 from .source import Source
 from .source_build import make_sources_from_file_yaml
-from .index import Index
 
 MK_GLOB = ("*.mk.yaml", "*.mk.yml")
 

@@ -1,9 +1,12 @@
-import pytest
+# pylint: disable=redefined-outer-name
+
+import os
+from contextlib import contextmanager
 from pathlib import Path
 from textwrap import dedent
-from contextlib import contextmanager
-from typing import Dict, Union, Tuple
-import os
+from typing import Dict, Tuple, Union
+
+import pytest
 
 SOURCE_PRIMARY = """
 - source: primary_file

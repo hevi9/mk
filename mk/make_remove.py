@@ -1,13 +1,13 @@
-from typing import Iterable, List, Any
-from pathlib import Path
-from shutil import rmtree
 import os
 import stat
+from pathlib import Path
+from shutil import rmtree
+from typing import Any, Iterable, List
 
+from .context import render
 from .index import Index
 from .types import Runnable, Source
 from .ui import ui
-from .context import render
 
 
 def _remove_readonly(func, path, _):
@@ -23,9 +23,9 @@ class Remove(Runnable):
     def __init__(self, source: Source, make_item: dict):
         super().__init__(source, make_item)
         params = make_item["remove"]
-        if type(params) is str:
+        if isinstance(params, str):
             self.paths = params.split()
-        elif type(params) is list:
+        elif isinstance(params, list):
             self.paths = params
         else:
             raise ValueError(

@@ -1,9 +1,10 @@
 from typing import Iterable
-from .types import Runnable
-from .source import Source
-from .run import run
-from .index import Index
+
 from .context import render
+from .index import Index
+from .run import run
+from .source import Source
+from .types import Runnable
 
 
 class Use(Runnable):
@@ -12,10 +13,11 @@ class Use(Runnable):
     _use_source: Source = None
     use_context: dict
 
-    def __init__(self, source: Source, use_source_name: str, use_context: dict):
+    def __init__(self, source: Source, make_item: dict):
+        super().__init__(source, make_item)
         self.source = source
-        self.use_source_name = use_source_name
-        self.use_context = use_context
+        self.use_source_name = make_item["use"]
+        self.use_context = make_item.get("vars", {})
 
     def update(self, index: Index) -> None:
         self.use_source = index.find_from(self.use_source_name, self.source)

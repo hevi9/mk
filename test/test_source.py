@@ -1,15 +1,24 @@
-from ruamel.yaml.scanner import ScannerError
+# pylint: disable=unused-import
+
 import pytest
+from ruamel.yaml.scanner import ScannerError
+
+from mk.context import make_root_context
+from mk.find import update_index_from_roots
 from mk.index import Index
 from mk.location import Location
 from mk.run import run
-from mk.find import update_index_from_roots
 from mk.source_build import make_sources_from_file_yaml
 from mk.ui import ui
-from mk.context import make_root_context
 
 # noinspection PyUnresolvedReferences
-from .fixtures import mkprimary, mkerror, mkroots, mkroot
+
+from .fixtures import (
+    mkerror,
+    mkprimary,
+    mkroot,
+    mkroots,
+)
 
 
 def test_primary_source(mkroots):
@@ -19,7 +28,7 @@ def test_primary_source(mkroots):
     ):
         assert source.name in ("primary_file", "other_source", "combined")
         assert str(source.location.path_abs).endswith("primary.mk.yaml")
-        assert type(source.make) is list
+        assert isinstance(source.make, list)
 
 
 def test_error_1(mkroots):
@@ -50,7 +59,7 @@ def test_source_run(mkroot, capfd):
     source = index.find("sample/echo_test")
     context = {}
     run(source, context)
-    out, err = capfd.readouterr()
+    out, _ = capfd.readouterr()
     lines = out.split()
     assert lines == ["testing1", "testing2", "testing3"]
 
@@ -78,7 +87,7 @@ def test_source_make_use(mkroot, capfd):
     source = index.find("test/source/super-source")
     context = {}
     run(source, context)
-    out, err = capfd.readouterr()
+    out, _ = capfd.readouterr()
     lines = out.split()
     assert lines == ["sub-source-1", "sub-source-2", "super-source"]
 
@@ -116,7 +125,7 @@ def test_source_make_render(mkroot, capfd):
     update_index_from_roots(index, [mkroot.path_root], [])
     source = index.find("test/source/super-source")
     run(source, context)
-    out, err = capfd.readouterr()
+    out, _ = capfd.readouterr()
     lines = out.split()
     assert lines == [
         "super-source",
@@ -128,7 +137,7 @@ def test_source_make_render(mkroot, capfd):
     ]
 
 
-def test_source_make_remove_file(mkroot, capfd):
+def test_source_make_remove_file(mkroot):
     ui.is_verbose = False
     mkroot.have(
         "test/source/make_remove_file.mk.yaml",
@@ -149,7 +158,7 @@ def test_source_make_remove_file(mkroot, capfd):
     assert not remove_file.exists()
 
 
-def test_source_make_remove_tree(mkroot, capfd):
+def test_source_make_remove_tree(mkroot):
     ui.is_verbose = False
     mkroot.have(
         "test/source/make_remove_tree.mk.yaml",
@@ -173,7 +182,7 @@ def test_source_make_remove_tree(mkroot, capfd):
     assert not remove_dir.exists()
 
 
-def test_source_make_remove_tree_render(mkroot, capfd):
+def test_source_make_remove_tree_render(mkroot):
     ui.is_verbose = False
     mkroot.have(
         "test/source/make_remove_tree.mk.yaml",
@@ -198,7 +207,7 @@ def test_source_make_remove_tree_render(mkroot, capfd):
     assert not remove_dir.exists()
 
 
-def test_source_make_remove_tree_render_list(mkroot, capfd):
+def test_source_make_remove_tree_render_list(mkroot):
     ui.is_verbose = False
     mkroot.have(
         "test/source/make_remove_tree.mk.yaml",
@@ -224,7 +233,7 @@ def test_source_make_remove_tree_render_list(mkroot, capfd):
     assert not remove_dir.exists()
 
 
-def test_source_make_copy_tree(mkroot, capfd):
+def test_source_make_copy_tree(mkroot):
     ui.is_verbose = False
     mkroot.have(
         "test/source/make_copy_tree.mk.yaml",
@@ -253,7 +262,7 @@ def test_source_make_copy_tree(mkroot, capfd):
 
 
 @pytest.mark.skip(reason="TODO")
-def test_source_make_copy_file(mkroot, capfd):
+def test_source_make_copy_file(mkroot):
     ui.is_verbose = False
     mkroot.have(
         "test/source/make_copy.mk.yaml",
@@ -269,7 +278,7 @@ def test_source_make_copy_file(mkroot, capfd):
 
 
 @pytest.mark.skip(reason="TODO")
-def test_source_make_move(mkroot, capfd):
+def test_source_make_move(mkroot):
     ui.is_verbose = False
     mkroot.have(
         "test/source/make_cmd.mk.yaml",
@@ -291,7 +300,7 @@ def test_source_make_move(mkroot, capfd):
 
 
 @pytest.mark.skip(reason="TODO")
-def test_source_make_file_update(mkroot, capfd):
+def test_source_make_file_update(mkroot):
     ui.is_verbose = False
     mkroot.have(
         "test/source/make_cmd.mk.yaml",

@@ -1,12 +1,12 @@
-from typing import Iterable, List, Any
-from pathlib import Path
-from shutil import copy2, copytree
 import os
 import shlex
+from pathlib import Path
+from shutil import copy2, copytree
+from typing import Any, Iterable, List
 
+from .context import render
 from .types import Runnable, Source
 from .ui import ui
-from .context import render
 
 
 class Copy(Runnable):
@@ -17,9 +17,9 @@ class Copy(Runnable):
     def __init__(self, source: Source, make_item: dict):
         super().__init__(source, make_item)
         params = make_item["copy"]
-        if type(params) is str:
+        if isinstance(params, str):
             self.path_from, self.path_to = shlex.split(params)
-        elif type(params) is dict:
+        elif isinstance(params, dict):
             self.path_from = params["from"]
             self.path_to = params["to"]
         else:

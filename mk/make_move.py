@@ -1,13 +1,12 @@
-from typing import Iterable, List
-from pathlib import Path
-from shutil import move
 import os
 import shlex
+from pathlib import Path
+from shutil import move
+from typing import Iterable, List
 
-from .types import Runnable
-from .ui import ui
 from .context import render
-from .types import Source
+from .types import Runnable, Source
+from .ui import ui
 
 
 class Move(Runnable):
@@ -18,9 +17,9 @@ class Move(Runnable):
     def __init__(self, source: Source, make_item: dict):
         super().__init__(source, make_item)
         params = make_item["move"]
-        if type(params) is str:
+        if isinstance(params, str):
             self.from_path, self.to_path = shlex.split(params)
-        elif type(params) is dict:
+        elif isinstance(params, dict):
             self.from_path = params["from"]
             self.to_path = params["to"]
         else:

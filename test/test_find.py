@@ -1,9 +1,11 @@
-import pytest
-import mk.find
 from pathlib import Path
 
+import pytest
+
+import mk.find
+
 # noinspection PyUnresolvedReferences
-from .fixtures import mkprimary, mkerror, mkroots
+from .fixtures import mkerror, mkprimary, mkroots
 
 
 def test_find_mk_files(mkroots):

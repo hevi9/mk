@@ -2,7 +2,7 @@ import sys
 
 import jinja2
 
-env = jinja2.Environment(
+env = jinja2.Environment(  # nosec
     variable_start_string="${",
     variable_end_string="}",
     undefined=jinja2.StrictUndefined,
