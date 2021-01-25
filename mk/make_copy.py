@@ -5,8 +5,10 @@ from shutil import copy2, copytree
 from typing import Any, Iterable, List
 
 from .context import render
-from .types import Runnable, Source
+from .index import Index
+from .types import Runnable
 from .ui import ui
+from .source import Source
 
 
 class Copy(Runnable):
@@ -38,3 +40,6 @@ class Copy(Runnable):
             ignore_dangling_symlinks=False,
             dirs_exist_ok=False,
         )
+
+    def update(self, index: Index) -> None:
+        pass

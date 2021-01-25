@@ -1,14 +1,17 @@
-from typing import Iterable, Mapping
+from __future__ import annotations
 
-import strictyaml
+from typing import Iterable, Mapping, Type
+
+import strictyaml  # type: ignore
 
 from .location import Location
+from .source import Source
 from .make_copy import Copy
 from .make_move import Move
 from .make_remove import Remove
 from .make_shell import Shell
 from .make_use import Use
-from .source import Source
+from .types import Runnable
 
 
 MAKE_ITEM_MAP = {
@@ -43,7 +46,8 @@ def make_source_from_dict(item: dict, location: Location) -> Source:
         if len(make_type) > 1:
             raise ValueError(f"Conflicting make types {make_type}")
         make_type = make_type.pop()
-        source.make.append(MAKE_ITEM_MAP[make_type](source, make_item))
+        source.make.append(MAKE_ITEM_MAP[make_type](source, make_item))  # type: ignore
+
     return source
 
 

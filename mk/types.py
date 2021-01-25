@@ -1,46 +1,19 @@
-from abc import ABC, abstractmethod
-from typing import Iterable
+from __future__ import annotations
 
-from mk.location import Location
+from abc import abstractmethod, ABCMeta
+from typing import Iterable, TYPE_CHECKING
 
 
-class Updateable(ABC):
+if TYPE_CHECKING:
+    from .source import Source
+    from .index import Index
+
+
+class Updateable(metaclass=ABCMeta):
     """ """
 
-    def update(self, index: "IIndex") -> None:
-        """ """
-
-
-class Source(Updateable):
-    """ """
-
-    location: Location
-
-    @property
     @abstractmethod
-    def id(self) -> str:
-        """ """
-
-    @abstractmethod
-    def run(self, context: dict) -> None:
-        """ """
-
-
-class IIndex(ABC):
-    @abstractmethod
-    def add_source(self, source: Source) -> None:
-        """ """
-
-    @abstractmethod
-    def list(self) -> Iterable[Source]:
-        """ """
-
-    @abstractmethod
-    def find(self, source_id: str) -> Source:
-        """ """
-
-    @abstractmethod
-    def find_from(self, use_source_name: str, from_source: Source) -> Source:
+    def update(self, index: Index) -> None:
         """ """
 
 
@@ -58,3 +31,36 @@ class Runnable(Updateable):
     def programs(self) -> Iterable[str]:
         """ """
         return []
+
+
+# class Source(Updateable):
+#     """ """
+#
+#     location: Location
+#
+#     @property
+#     @abstractmethod
+#     def id(self) -> str:
+#         """ """
+#
+#     @abstractmethod
+#     def run(self, context: dict) -> None:
+#         """ """
+
+
+# class Index(ABC):
+#     @abstractmethod
+#     def add_source(self, source: "Source") -> None:
+#         """ """
+#
+#     @abstractmethod
+#     def list(self) -> Iterable["Source"]:
+#         """ """
+#
+#     @abstractmethod
+#     def find(self, source_id: str) -> "Source":
+#         """ """
+#
+#     @abstractmethod
+#     def find_from(self, use_source_name: str, from_source: "Source") -> "Source":
+#         """ """

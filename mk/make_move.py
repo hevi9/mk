@@ -5,8 +5,11 @@ from shutil import move
 from typing import Iterable, List
 
 from .context import render
-from .types import Runnable, Source
+from .index import Index
+from .types import Runnable
 from .ui import ui
+
+from .source import Source
 
 
 class Move(Runnable):
@@ -34,3 +37,6 @@ class Move(Runnable):
             raise RuntimeError(f"{to_path} exists on 'move'")
         ui.talk(f"Move {from_path} to {to_path}")
         move(from_path, to_path)
+
+    def update(self, index: Index) -> None:
+        pass

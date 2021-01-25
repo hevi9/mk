@@ -1,11 +1,15 @@
-from typing import List
+from __future__ import annotations
 
-from . import types
+from typing import List, TYPE_CHECKING
+
 from .location import Location
-from .types import IIndex, Runnable
+from .types import Runnable
+
+if TYPE_CHECKING:
+    from .index import Index
 
 
-class Source(types.Source):
+class Source:
 
     name: str
     location: Location
@@ -28,7 +32,7 @@ class Source(types.Source):
         """ Directory where the source is defined. """
         return str(self.location.path_abs.parent)
 
-    def update(self, index: IIndex) -> None:
+    def update(self, index: Index) -> None:
         for action in self.make:
             action.update(index)
 

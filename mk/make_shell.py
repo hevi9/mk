@@ -5,7 +5,7 @@ from .context import render
 from .index import Index
 from .types import Runnable
 from .ui import ui
-from .types import Source
+from .source import Source
 
 
 class Shell(Runnable):

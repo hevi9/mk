@@ -6,8 +6,9 @@ from typing import Any, Iterable, List
 
 from .context import render
 from .index import Index
-from .types import Runnable, Source
+from .types import Runnable
 from .ui import ui
+from .source import Source
 
 
 def _remove_readonly(func, path, _):
@@ -49,3 +50,6 @@ class Remove(Runnable):
             else:
                 ui.talk("remove file {path}", path=path)
                 os.remove(path)
+
+    def update(self, index: Index) -> None:
+        pass

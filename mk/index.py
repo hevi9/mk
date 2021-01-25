@@ -1,11 +1,14 @@
-from typing import Iterable
+from __future__ import annotations
 
-from . import types
+from typing import Iterable, TYPE_CHECKING
+
 from .ex import DuplicateSourceError
-from .types import Source
+
+if TYPE_CHECKING:
+    from .source import Source
 
 
-class Index(types.IIndex):
+class Index:
     def __init__(self):
         self._source_map = {}
 
