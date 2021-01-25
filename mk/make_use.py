@@ -1,16 +1,17 @@
-from typing import Iterable
+from typing import Iterable, Union
 
 from .context import render
 from .index import Index
 from .run import run
 from .source import Source
-from .types import Runnable
+from .types import Runnable, IIndex
+from . import types
 
 
 class Use(Runnable):
     source: Source
     use_source_name: str
-    _use_source: Source = None
+    _use_source: Union[types.Source, None] = None
     use_context: dict
 
     def __init__(self, source: Source, make_item: dict):
@@ -19,7 +20,7 @@ class Use(Runnable):
         self.use_source_name = make_item["use"]
         self.use_context = make_item.get("vars", {})
 
-    def update(self, index: Index) -> None:
+    def update(self, index: IIndex) -> None:
         self.use_source = index.find_from(self.use_source_name, self.source)
 
     def run(self, context: dict) -> None:
@@ -40,7 +41,7 @@ class Use(Runnable):
         return self._use_source
 
     @use_source.setter
-    def use_source(self, value: Source):
+    def use_source(self, value: types.Source):
         if value is self.source:  # TODO add recursively circular check
             raise ValueError(f"Cannot use circular dependency for {self.source}")
         self._use_source = value

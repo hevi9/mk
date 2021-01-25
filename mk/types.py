@@ -7,7 +7,7 @@ from mk.location import Location
 class Updateable(ABC):
     """ """
 
-    def update(self, index: "Index") -> None:
+    def update(self, index: "IIndex") -> None:
         """ """
 
 
@@ -26,7 +26,7 @@ class Source(Updateable):
         """ """
 
 
-class Index(ABC):
+class IIndex(ABC):
     @abstractmethod
     def add_source(self, source: Source) -> None:
         """ """

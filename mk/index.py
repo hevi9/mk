@@ -5,7 +5,7 @@ from .ex import DuplicateSourceError
 from .types import Source
 
 
-class Index(types.Index):
+class Index(types.IIndex):
     def __init__(self):
         self._source_map = {}
 

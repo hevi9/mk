@@ -2,7 +2,7 @@ from typing import List
 
 from . import types
 from .location import Location
-from .types import Index, Runnable
+from .types import IIndex, Runnable
 
 
 class Source(types.Source):
@@ -28,7 +28,7 @@ class Source(types.Source):
         """ Directory where the source is defined. """
         return str(self.location.path_abs.parent)
 
-    def update(self, index: Index) -> None:
+    def update(self, index: IIndex) -> None:
         for action in self.make:
             action.update(index)
 

@@ -31,6 +31,8 @@ aiohttp_cors = "^0.7.0"
 interrogate = "^1.3.2"
 bandit = "^1.7.0"
 isort = "^4.2.5"
+pre-commit = "^2.9.3"
+mypy = "^0.800"
 
 [tool.poetry.scripts]
 mk = 'mk.__main__:cli'
@@ -54,4 +56,5 @@ disable = ["no-self-use",
     "too-few-public-methods",
     "fixme",
     "broad-except",
+    "unsubscriptable-object", # https://github.com/PyCQA/pylint/issues/3882
 ]
