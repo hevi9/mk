@@ -39,14 +39,14 @@ repos:
         language: system
         types: [python]
 
-#-   repo: local
-#    hooks:
-#    -   id: mypy
-#        name: Check python files with mypy
-#        entry: mypy mk test
-#        language: system
-#        types: [python]
-#        pass_filenames: false
+-   repo: local
+    hooks:
+    -   id: mypy
+        name: Check python files with mypy
+        entry: mypy mk test
+        language: system
+        types: [python]
+        pass_filenames: false
 
 -   repo: local
     hooks:
