@@ -52,7 +52,16 @@ repos:
     hooks:
     -   id: black
         name: Check files with black
-        entry: black --check --quiet mk test
+        entry: black --check mk test
+        language: system
+        types: [python]
+        pass_filenames: false
+
+-   repo: local
+    hooks:
+    -   id: isort
+        name: Check files with isort
+        entry: isort --check-only
         language: system
         types: [python]
         pass_filenames: false

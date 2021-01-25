@@ -11,14 +11,9 @@ from mk.run import run
 from mk.source_build import make_sources_from_file_yaml
 from mk.ui import ui
 
-# noinspection PyUnresolvedReferences
+from .fixtures import mkerror, mkprimary, mkroot, mkroots
 
-from .fixtures import (
-    mkerror,
-    mkprimary,
-    mkroot,
-    mkroots,
-)
+# noinspection PyUnresolvedReferences
 
 
 def test_primary_source(mkroots):

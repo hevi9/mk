@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from abc import abstractmethod, ABCMeta
-from typing import Iterable, TYPE_CHECKING
-
+from abc import ABCMeta, abstractmethod
+from typing import TYPE_CHECKING, Iterable
 
 if TYPE_CHECKING:
     from .source import Source

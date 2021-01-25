@@ -6,9 +6,9 @@ from typing import Any, Iterable, List
 
 from .context import render
 from .index import Index
+from .source import Source
 from .types import Runnable
 from .ui import ui
-from .source import Source
 
 
 def _remove_readonly(func, path, _):

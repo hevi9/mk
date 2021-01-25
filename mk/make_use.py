@@ -1,14 +1,12 @@
 from __future__ import annotations
 
-from typing import Iterable, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Iterable, Optional
 
-from .context import render
-
-from .run import run
-from .types import Runnable
 from . import types
-
+from .context import render
+from .run import run
 from .source import Source
+from .types import Runnable
 
 if TYPE_CHECKING:
     from .index import Index
