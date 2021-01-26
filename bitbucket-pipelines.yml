@@ -3,6 +3,11 @@
 #  This template allows you to validate your python code.
 #  The workflow allows running tests and code linting on the default branch.
 
+definitions:
+  caches:
+    poetry-path: ~/.poetry
+    poetry-venv: ~/.cache/pypoetry/virtualenvs
+
 image: python:3.8
 
 pipelines:
@@ -12,6 +17,8 @@ pipelines:
           name: Test mk
           caches:
             - pip
+            - poetry-path
+            - poetry-venv
           script:
             - pip install poetry
             - poetry install -vv
