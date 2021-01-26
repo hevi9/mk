@@ -4,11 +4,12 @@ import subprocess  # nosec
 from .bases import Runnable
 from .context import render
 from .index import Index
+from .make_base import MakeBase
 from .source import Source
 from .ui import ui
 
 
-class Shell(Runnable):
+class Shell(MakeBase):
     def __init__(self, source: Source, make_item: dict):
         super().__init__(source, make_item)
         self.cmd_text = make_item["shell"]

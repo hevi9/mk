@@ -7,6 +7,7 @@ from typing import Any, Iterable, List
 from .bases import Runnable
 from .context import render
 from .index import Index
+from .make_base import MakeBase
 from .source import Source
 from .ui import ui
 
@@ -17,7 +18,7 @@ def _remove_readonly(func, path, _):
     func(path)
 
 
-class Remove(Runnable):
+class Remove(MakeBase):
 
     paths: List[str]
 

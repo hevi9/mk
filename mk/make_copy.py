@@ -7,11 +7,12 @@ from typing import Any, Iterable, List
 from .bases import Runnable
 from .context import render
 from .index import Index
+from .make_base import MakeBase
 from .source import Source
 from .ui import ui
 
 
-class Copy(Runnable):
+class Copy(MakeBase):
 
     path_from: str
     path_to: str

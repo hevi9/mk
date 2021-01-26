@@ -2,22 +2,24 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, List
 
-from .bases import Runnable
+from .bases import Item, Runnable, Updateable
 from .location import Location
 
 if TYPE_CHECKING:
     from .index import Index
 
 
-class Source:
+class Source(Item, Runnable):
 
     name: str
-    location: Location
-    make: List[Runnable]
+    """ Name of the source. """
 
-    def __init__(self, name: str, location: Location):
+    make: List[Runnable]
+    """ Make list for the source """
+
+    def __init__(self, name: str, location: Location, control: dict):
+        super().__init__(control, location)
         self.name = name
-        self.location = location
         self.make = []
 
     def __str__(self):

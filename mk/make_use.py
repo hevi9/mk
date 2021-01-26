@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Iterable, Optional
 from . import bases
 from .bases import Runnable
 from .context import render
+from .make_base import MakeBase
 from .run import run
 from .source import Source
 
@@ -12,7 +13,7 @@ if TYPE_CHECKING:
     from .index import Index
 
 
-class Use(Runnable):
+class Use(MakeBase):
     source: Source
     use_source_name: str
     _use_source: Optional[Source] = None

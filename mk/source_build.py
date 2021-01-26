@@ -26,6 +26,7 @@ def make_source_from_dict(item: dict, location: Location) -> Source:
     """ """
     source = Source(
         name=item["source"],
+        control=item,
         location=location,
     )
     make_list = item["make"]
