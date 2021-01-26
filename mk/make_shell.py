@@ -1,10 +1,10 @@
 import shlex
 import subprocess  # nosec
 
+from .bases import Runnable
 from .context import render
 from .index import Index
 from .source import Source
-from .types import Runnable
 from .ui import ui
 
 

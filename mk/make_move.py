@@ -4,10 +4,10 @@ from pathlib import Path
 from shutil import move
 from typing import Iterable, List
 
+from .bases import Runnable
 from .context import render
 from .index import Index
 from .source import Source
-from .types import Runnable
 from .ui import ui
 
 
@@ -35,7 +35,7 @@ class Move(Runnable):
         if to_path.exists():
             raise RuntimeError(f"{to_path} exists on 'move'")
         ui.talk(f"Move {from_path} to {to_path}")
-        move(from_path, to_path)
+        move(str(from_path), to_path)  # str for mypy
 
     def update(self, index: Index) -> None:
         pass

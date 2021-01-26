@@ -4,10 +4,10 @@ from pathlib import Path
 from shutil import copy2, copytree
 from typing import Any, Iterable, List
 
+from .bases import Runnable
 from .context import render
 from .index import Index
 from .source import Source
-from .types import Runnable
 from .ui import ui
 
 

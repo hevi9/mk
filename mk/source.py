@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, List
 
+from .bases import Runnable
 from .location import Location
-from .types import Runnable
 
 if TYPE_CHECKING:
     from .index import Index

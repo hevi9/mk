@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Iterable, Optional
 
-from . import types
+from . import bases
+from .bases import Runnable
 from .context import render
 from .run import run
 from .source import Source
-from .types import Runnable
 
 if TYPE_CHECKING:
     from .index import Index
