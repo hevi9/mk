@@ -33,14 +33,15 @@ class Copy(MakeBase):
     def run(self, context: dict) -> None:
         path_from = Path(render(self.path_from, context))
         path_to = Path(render(self.path_to, context))
-        copytree(
-            path_from,
-            path_to,
-            symlinks=False,
-            ignore=None,
-            ignore_dangling_symlinks=False,
-            dirs_exist_ok=False,
-        )
+        with self._run_context():
+            copytree(
+                path_from,
+                path_to,
+                symlinks=False,
+                ignore=None,
+                ignore_dangling_symlinks=False,
+                dirs_exist_ok=False,
+            )
 
     def update(self, index: Index) -> None:
         pass

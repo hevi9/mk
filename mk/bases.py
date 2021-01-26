@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from abc import ABCMeta, abstractmethod
-from typing import TYPE_CHECKING, Any, Iterable, Optional
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, Iterable, Mapping, Optional
 
 from .ex import ValidateError
 from .location import Location
@@ -46,7 +47,7 @@ class Item(metaclass=ABCMeta):
 
 
 class Updateable(metaclass=ABCMeta):
-    """ """
+    """ Update control items in pass 2. """
 
     @abstractmethod
     def update(self, index: Index) -> None:
@@ -54,12 +55,22 @@ class Updateable(metaclass=ABCMeta):
 
 
 class Runnable(Updateable):
-    """ """
+    """ Runnable item. """
 
     @abstractmethod
     def run(self, context: dict) -> None:
-        """ """
+        """ Run action, either direct or composite. """
 
+    @abstractmethod
     def programs(self) -> Iterable[str]:
-        """ """
-        return []
+        """ External programs used in this run context. """
+
+    @property
+    @abstractmethod
+    def cd(self) -> Optional[Path]:
+        """ Current working directory in this run context. """
+
+    @property
+    @abstractmethod
+    def env(self) -> Mapping[str, str]:
+        """ Environment variables in this run context. """

@@ -17,7 +17,12 @@ class Shell(MakeBase):
     def run(self, context: dict):
         cmd_text = render(self.cmd_text, context)
         ui.run("{cmd}", cmd=cmd_text)
-        subprocess.run(cmd_text, shell=True).check_returncode()  # nosec
+        subprocess.run(
+            cmd_text,
+            shell=True,  # nosec
+            cwd=self.cd,
+            env=self.env,
+        ).check_returncode()  # nosec
 
     def programs(self):
         # parts = shlex.split(self.cmd_text)

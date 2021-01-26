@@ -45,12 +45,13 @@ class Remove(MakeBase):
             if not path.exists():
                 ui.talk("{path} does not exists, no op", path=path)
                 continue
-            if path.is_dir():
-                ui.talk("remove tree {path}", path=path)
-                rmtree(path, onerror=_remove_readonly)
-            else:
-                ui.talk("remove file {path}", path=path)
-                os.remove(path)
+            with self._run_context():
+                if path.is_dir():
+                    ui.talk("remove tree {path}", path=path)
+                    rmtree(path, onerror=_remove_readonly)
+                else:
+                    ui.talk("remove file {path}", path=path)
+                    os.remove(path)
 
     def update(self, index: Index) -> None:
         pass

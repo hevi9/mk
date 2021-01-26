@@ -36,7 +36,8 @@ class Move(MakeBase):
         if to_path.exists():
             raise RuntimeError(f"{to_path} exists on 'move'")
         ui.talk(f"Move {from_path} to {to_path}")
-        move(str(from_path), to_path)  # str for mypy
+        with self._run_context():
+            move(str(from_path), to_path)  # str for mypy
 
     def update(self, index: Index) -> None:
         pass

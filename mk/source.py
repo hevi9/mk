@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List
+import os
+from pathlib import Path
+from typing import TYPE_CHECKING, Iterable, List, Mapping, Optional
 
 from .bases import Item, Runnable, Updateable
 from .location import Location
@@ -17,10 +19,16 @@ class Source(Item, Runnable):
     make: List[Runnable]
     """ Make list for the source """
 
+    _cd: Optional[Path]
+
+    _env: dict
+
     def __init__(self, name: str, location: Location, control: dict):
         super().__init__(control, location)
         self.name = name
         self.make = []
+        self._cd = Path(str(control.get("cd"))) if control.get("cd", False) else None
+        self._env = control.get("env", {})
 
     def __str__(self):
         return self.id
@@ -41,3 +49,15 @@ class Source(Item, Runnable):
     def run(self, context: dict) -> None:
         for action in self.make:
             action.run(dict(context, source=self))
+
+    def programs(self) -> Iterable[str]:
+        for make in self.make:
+            yield from make.programs()
+
+    @property
+    def cd(self) -> Optional[Path]:
+        return self._cd
+
+    @property
+    def env(self) -> Mapping[str, str]:
+        return dict(os.environ, **self._env)
