@@ -1,3 +1,12 @@
-git+git://github.com/hevi9/hevi-lib/#egg=hevi-lib
-jinja2
-PyYAML
+click==7.1.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
+colorama==0.4.4; python_version >= "3.5" and python_full_version < "3.0.0" and sys_platform == "win32" or sys_platform == "win32" and python_version >= "3.5" and python_full_version >= "3.5.0"
+jinja2==2.11.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
+loguru==0.5.3; python_version >= "3.5"
+markupsafe==1.1.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
+python-dateutil==2.8.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0"
+python-decouple==3.3
+ruamel.yaml.clib==0.2.2; platform_python_implementation == "CPython" and python_version < "3.9"
+ruamel.yaml==0.16.12
+six==1.15.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0"
+strictyaml==1.2.0
+win32-setctime==1.0.3; sys_platform == "win32" and python_version >= "3.5"
