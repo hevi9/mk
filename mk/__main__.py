@@ -89,7 +89,8 @@ def list(ctx):
         table.add_column("Source")
         table.add_column("Description")
         for source in sorted(index.list(), key=lambda s: s.id):
-            table.add_row(source.id, ".. title ..")
+            if source.show:
+                table.add_row(source.id, source.doc)
         console.print(table)
     except Exception as ex:
         ui.error_exit("{ex}", ex=ex)
