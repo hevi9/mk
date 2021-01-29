@@ -5,7 +5,7 @@ name: Python mk package
 
 on:
   push:
-    branches: [ develop ]
+#    branches: [ develop ]
   pull_request:
     branches: [ develop ]
 
