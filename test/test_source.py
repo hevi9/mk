@@ -256,6 +256,30 @@ def test_source_make_copy_tree(mkroot):
     assert (target_area / "target-tree-2" / ".gitignore").exists()
 
 
+@pytest.mark.skip(reason="TODO")
+# def test_action_cd(mkroot, capfd):
+def test_action_cd(mkroot):
+    ui.is_verbose = False
+    mkroot.have(
+        "test/source/source_action_cd.mk.yaml",
+        """
+        -   source: action-cd
+            make:
+            -   mkdir -p ${target}
+            -   shell: pwd
+                cd: ${target}
+        """,
+    )
+    # _, target_rel = mkroot.have_dir("test_cwd")
+    index = Index()
+    update_index_from_roots(index, [mkroot.path_root], [])
+    source = index.find("test/source/action-cd")
+    context = make_root_context("target-root")
+    run(source, context)
+    # out, _ = capfd.readouterr()
+    # lines = out.split()
+
+
 def test_item_doc_and_show(mkroot):
     ui.is_verbose = False
     mkroot.have(

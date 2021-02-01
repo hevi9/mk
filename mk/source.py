@@ -4,7 +4,8 @@ import os
 from pathlib import Path
 from typing import TYPE_CHECKING, Iterable, List, Mapping, Optional
 
-from .bases import Item, Runnable, Updateable
+from .bases import Item, Runnable
+from .context import render
 from .location import Location
 
 if TYPE_CHECKING:
@@ -47,6 +48,9 @@ class Source(Item, Runnable):
             action.update(index)
 
     def run(self, context: dict) -> None:
+        # new_context = {}
+        # for key in context.keys():
+        #     new_context[key] = render(context[key], context)
         for action in self.make:
             action.run(dict(context, source=self))
 
