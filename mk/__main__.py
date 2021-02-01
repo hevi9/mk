@@ -69,6 +69,7 @@ def new(ctx, source_name, target_name):
     except KeyError as ex:
         ui.error_exit("Source not found {ex}", ex=ex)
     except Exception as ex:
+        console.print_exception()
         ui.error_exit("{ex}", ex=ex)
 
 
