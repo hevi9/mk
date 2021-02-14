@@ -11,10 +11,6 @@ from mk.run import run
 from mk.source_build import make_sources_from_file_yaml
 from mk.ui import ui
 
-from .fixtures import mkerror, mkprimary, mkroot, mkroots
-
-# noinspection PyUnresolvedReferences
-
 
 def test_primary_source(mkroots):
     path_root, path_rel = mkroots["base"]["primary.mk.yaml"]
@@ -261,7 +257,7 @@ def test_source_make_copy_tree(mkroot):
 def test_action_cd(mkroot):
     ui.is_verbose = False
     mkroot.have(
-        "test/source/source_action_cd.mk.yaml",
+        "test/source/action_cd.mk.yaml",
         """
         -   source: action-cd
             make:
@@ -270,11 +266,10 @@ def test_action_cd(mkroot):
                 cd: ${target}
         """,
     )
-    # _, target_rel = mkroot.have_dir("test_cwd")
     index = Index()
     update_index_from_roots(index, [mkroot.path_root], [])
     source = index.find("test/source/action-cd")
-    context = make_root_context("target-root")
+    context = make_root_context(target_name="target-cd-root")
     run(source, context)
     # out, _ = capfd.readouterr()
     # lines = out.split()
