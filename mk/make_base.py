@@ -4,23 +4,23 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Generator, Iterable, Mapping, Optional, Tuple
 
-from mk.bases import Item, Runnable
 from mk.index import Index
 from mk.location import Location
 from mk.source import Source
+from mk.types import Item, Runnable
 
 
 class MakeBase(Item, Runnable):
     """ Base implementation for make items. """
 
     source: Source
-    _cd: Optional[Path]
+    _cd: Optional[str]
     _env: dict
 
     def __init__(self, source: Source, control: dict):
         super().__init__(control, source.location)
         self.source = source
-        self._cd = Path(str(control.get("cd"))) if control.get("cd", False) else None
+        self._cd = control.get("cd", None)
         self._env = control.get("env", {})
 
     def update(self, index: Index) -> None:
@@ -30,7 +30,7 @@ class MakeBase(Item, Runnable):
         return []
 
     @property
-    def cd(self) -> Optional[Path]:
+    def cd(self) -> Optional[str]:
         if self._cd:
             return self._cd
         if self.source.cd:

@@ -67,7 +67,7 @@ class Runnable(Updateable):
 
     @property
     @abstractmethod
-    def cd(self) -> Optional[Path]:
+    def cd(self) -> Optional[str]:
         """ Current working directory in this run context. """
 
     @property

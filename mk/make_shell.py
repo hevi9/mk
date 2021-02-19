@@ -1,7 +1,6 @@
 import subprocess  # nosec
 
 from .context import render
-from .index import Index
 from .make_base import MakeBase
 from .source import Source
 from .ui import ui
@@ -18,13 +17,11 @@ class Shell(MakeBase):
         subprocess.run(
             cmd_text,
             shell=True,  # nosec
-            cwd=self.cd,
+            cwd=render(self.cd, context) if self.cd else None,
             env=self.env,
         ).check_returncode()  # nosec
 
     def programs(self):
+        # TODO: implement programs
         # parts = shlex.split(self.cmd_text)
-        ...
-
-    def update(self, index: Index) -> None:
         ...
