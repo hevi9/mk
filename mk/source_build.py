@@ -4,7 +4,6 @@ from typing import Iterable, Mapping, Type
 
 import strictyaml  # type: ignore
 
-from .bases import Runnable
 from .location import Location
 from .make_copy import Copy
 from .make_move import Move
@@ -12,6 +11,7 @@ from .make_remove import Remove
 from .make_shell import Shell
 from .make_use import Use
 from .source import Source
+from .types import Runnable
 
 MAKE_ITEM_MAP = {
     "shell": Shell,

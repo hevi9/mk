@@ -4,9 +4,9 @@ import os
 from pathlib import Path
 from typing import TYPE_CHECKING, Iterable, List, Mapping, Optional
 
-from .bases import Item, Runnable
 from .context import render
 from .location import Location
+from .types import Item, Runnable
 
 if TYPE_CHECKING:
     from .index import Index
@@ -20,7 +20,7 @@ class Source(Item, Runnable):
     make: List[Runnable]
     """ Make list for the source """
 
-    _cd: Optional[Path]
+    _cd: Optional[str]
 
     _env: dict
 
@@ -28,7 +28,7 @@ class Source(Item, Runnable):
         super().__init__(control, location)
         self.name = name
         self.make = []
-        self._cd = Path(str(control.get("cd"))) if control.get("cd", False) else None
+        self._cd = control.get("cd", None)
         self._env = control.get("env", {})
 
     def __str__(self):
@@ -59,7 +59,7 @@ class Source(Item, Runnable):
             yield from make.programs()
 
     @property
-    def cd(self) -> Optional[Path]:
+    def cd(self) -> Optional[str]:
         return self._cd
 
     @property

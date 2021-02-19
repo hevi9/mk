@@ -65,6 +65,10 @@ class Root:
         return self.path_root, path_rel
 
     def have_dir(self, path_rel: Union[Path, str]) -> Tuple[Path, Path]:
+        """Ensure directory.
+        :param path_rel:
+        :return: root directory, relative directory
+        """
         path_rel = Path(path_rel)
         path_abs = self.path_root / path_rel
         path_abs.mkdir(parents=True, exist_ok=True)
