@@ -4,12 +4,12 @@ from pathlib import Path
 from shutil import copy2, copytree
 from typing import Any, Iterable, List
 
-from .context import render
-from .index import Index
-from .make_base import RunCtx
-from .source import Source
-from .types import Runnable
-from .ui import ui
+from mk.context import render
+from mk.index import Index
+from mk.make_base import RunCtx
+from mk.source import Source
+from mk.types import Runnable
+from mk.ui import ui
 
 
 class Copy(RunCtx):
