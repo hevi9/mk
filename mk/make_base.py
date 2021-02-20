@@ -10,7 +10,7 @@ from mk.source import Source
 from mk.types import Item, Runnable
 
 
-class MakeBase(Item, Runnable):
+class RunCtx(Item, Runnable):
     """ Base implementation for make items. """
 
     source: Source

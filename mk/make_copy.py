@@ -6,13 +6,13 @@ from typing import Any, Iterable, List
 
 from .context import render
 from .index import Index
-from .make_base import MakeBase
+from .make_base import RunCtx
 from .source import Source
 from .types import Runnable
 from .ui import ui
 
 
-class Copy(MakeBase):
+class Copy(RunCtx):
 
     path_from: str
     path_to: str

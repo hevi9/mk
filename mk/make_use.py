@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Iterable, Optional
 
 from . import types
 from .context import render
-from .make_base import MakeBase
+from .make_base import RunCtx
 from .run import run
 from .source import Source
 from .types import Runnable
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from .index import Index
 
 
-class Use(MakeBase):
+class Use(RunCtx):
     source: Source
     use_source_name: str
     _use_source: Optional[Source] = None
