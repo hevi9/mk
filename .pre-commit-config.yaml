@@ -9,6 +9,13 @@ repos:
     -   id: fix-byte-order-marker
         name: Fix UTF-8 byte order marker
     -   id: check-case-conflict
+    -   id: check-merge-conflict
+        name: Check for files that contain merge conflict strings.
+    -   id: check-symlinks
+        name: Checks for symlinks which do not point to anything
+    -   id: detect-private-key
+        name: Detects the presence of private keys
+
 
 -   repo: https://github.com/pre-commit/mirrors-isort
     rev: 'v5.7.0'
