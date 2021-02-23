@@ -9,6 +9,38 @@ repos:
     -   id: fix-byte-order-marker
     -   id: check-case-conflict
 
+-   repo: local
+    hooks:
+    -   id: black
+        name: Fix files with black
+        entry: black
+        language: system
+        types: [python]
+
+-   repo: local
+    hooks:
+    -   id: isort
+        name: Fix files with isort
+        entry: isort
+        language: system
+        types: [python]
+
+-   repo: local
+    hooks:
+    -   id: pylint
+        name: Check code with pylint
+        entry: pylint
+        language: system
+        types: [python]
+
+-   repo: local
+    hooks:
+    -   id: mypy
+        name: Check python files with mypy
+        entry: mypy  --ignore-missing-imports
+        language: system
+        types: [python]
+
 -   repo: https://github.com/Lucas-C/pre-commit-hooks-safety
     rev: v1.1.3
     hooks:
@@ -31,37 +63,5 @@ repos:
         pass_filenames: false
         always_run: true
 
--   repo: local
-    hooks:
-    -   id: pylint
-        name: Check code with pylint
-        entry: pylint
-        language: system
-        types: [python]
 
--   repo: local
-    hooks:
-    -   id: mypy
-        name: Check python files with mypy
-        entry: mypy  --ignore-missing-imports mk test
-        language: system
-        types: [python]
-        pass_filenames: false
 
--   repo: local
-    hooks:
-    -   id: black
-        name: Check files with black
-        entry: black --check mk test
-        language: system
-        types: [python]
-        pass_filenames: false
-
--   repo: local
-    hooks:
-    -   id: isort
-        name: Check files with isort
-        entry: isort --apply
-        language: system
-        types: [python]
-#        pass_filenames: false
