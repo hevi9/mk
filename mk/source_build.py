@@ -5,12 +5,12 @@ from typing import Iterable
 import strictyaml  # type: ignore
 
 from mk.action.make_copy import Copy
+from mk.action.make_move import Move
+from mk.action.make_remove import Remove
+from mk.action.make_shell import Shell
+from mk.action.make_use import Use
 
 from .location import Location
-from .make_move import Move
-from .make_remove import Remove
-from .make_shell import Shell
-from .make_use import Use
 from .source import Source
 
 MAKE_ITEM_MAP = {

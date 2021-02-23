@@ -2,14 +2,13 @@ import os
 import stat
 from pathlib import Path
 from shutil import rmtree
-from typing import Any, Iterable, List
+from typing import List
 
-from .context import render
-from .index import Index
-from .make_base import RunCtx
-from .source import Source
-from .types import Runnable
-from .ui import ui
+from mk.action.make_base import RunCtx
+from mk.context import render
+from mk.index import Index
+from mk.source import Source
+from mk.ui import ui
 
 
 def _remove_readonly(func, path, _):

@@ -1,15 +1,12 @@
-import os
 import shlex
 from pathlib import Path
 from shutil import move
-from typing import Iterable, List
 
-from .context import render
-from .index import Index
-from .make_base import RunCtx
-from .source import Source
-from .types import Runnable
-from .ui import ui
+from mk.action.make_base import RunCtx
+from mk.context import render
+from mk.index import Index
+from mk.source import Source
+from mk.ui import ui
 
 
 class Move(RunCtx):

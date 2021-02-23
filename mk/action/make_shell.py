@@ -1,9 +1,9 @@
 import subprocess  # nosec
 
-from .context import render
-from .make_base import RunCtx
-from .source import Source
-from .ui import ui
+from mk.action.make_base import RunCtx
+from mk.context import render
+from mk.source import Source
+from mk.ui import ui
 
 
 class Shell(RunCtx):

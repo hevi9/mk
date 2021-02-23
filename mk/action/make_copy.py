@@ -1,15 +1,11 @@
-import os
 import shlex
 from pathlib import Path
-from shutil import copy2, copytree
-from typing import Any, Iterable, List
+from shutil import copytree
 
+from mk.action.make_base import RunCtx
 from mk.context import render
 from mk.index import Index
-from mk.make_base import RunCtx
 from mk.source import Source
-from mk.types import Runnable
-from mk.ui import ui
 
 
 class Copy(RunCtx):

@@ -2,15 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Iterable, Optional
 
-from . import types
-from .context import render
-from .make_base import RunCtx
-from .run import run
-from .source import Source
-from .types import Runnable
+from mk.action.make_base import RunCtx
+from mk.context import render
+from mk.run import run
+from mk.source import Source
 
 if TYPE_CHECKING:
-    from .index import Index
+    from mk.index import Index
 
 
 class Use(RunCtx):
