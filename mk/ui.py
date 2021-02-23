@@ -6,9 +6,12 @@ from rich.console import Console
 console = Console()
 
 
-class _Ui:
+class UI:
 
-    _is_verbose: bool = True
+    _is_verbose: bool
+
+    def __init__(self, is_verbose: bool = True):
+        self._is_verbose = is_verbose
 
     @property
     def is_verbose(self) -> bool:
@@ -43,4 +46,4 @@ class _Ui:
             console.rule(format_text.format(**kwargs))
 
 
-ui = _Ui()
+ui = UI()
