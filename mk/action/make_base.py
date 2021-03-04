@@ -2,10 +2,9 @@ import os
 from abc import abstractmethod
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Generator, Iterable, Mapping, Optional, Tuple
+from typing import Iterable, Mapping, Optional
 
 from mk.index import Index
-from mk.location import Location
 from mk.source import Source
 from mk.types import Item, Runnable
 

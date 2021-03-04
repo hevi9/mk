@@ -1,14 +1,12 @@
 from __future__ import annotations
 
 from abc import ABCMeta, abstractmethod
-from pathlib import Path
 from typing import TYPE_CHECKING, Any, Iterable, Mapping, Optional
 
 from .ex import ValidateError
 from .location import Location
 
 if TYPE_CHECKING:
-    from .source import Source
     from .index import Index
 
 

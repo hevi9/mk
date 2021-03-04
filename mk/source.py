@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 import os
-from pathlib import Path
 from typing import TYPE_CHECKING, Iterable, List, Mapping, Optional
 
-from .context import render
 from .location import Location
 from .types import Item, Runnable
 
