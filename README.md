@@ -33,4 +33,3 @@ Validation is made on every commit. To validate code via cli run:
 ```shell
 > pre-commit run -a
 ```
-
