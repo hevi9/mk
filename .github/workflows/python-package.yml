@@ -57,5 +57,3 @@ jobs:
     - name: Check code vulnerabilities with bandit
       run: |
         poetry run bandit -ll -ii -r .
-
-

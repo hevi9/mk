@@ -23,5 +23,3 @@ pipelines:
             - pip install poetry
             - poetry install -vv
             - poetry run pytest -v test/* --junitxml=test-reports/report.xml
-
-

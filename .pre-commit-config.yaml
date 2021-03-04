@@ -1,3 +1,4 @@
+fail_fast: true
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.4.0
@@ -15,6 +16,8 @@ repos:
         name: Checks for symlinks which do not point to anything
     -   id: detect-private-key
         name: Detects the presence of private keys
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
 
 
 -   repo: https://github.com/pre-commit/mirrors-isort
@@ -67,6 +70,3 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
-
-
-

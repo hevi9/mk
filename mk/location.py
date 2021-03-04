@@ -8,7 +8,7 @@ class Location:
     path_rel: Path
 
     @property
-    def path_abs(self):
+    def path_abs(self) -> Path:
         return self.path_root / self.path_rel
 
     def __str__(self) -> str:
