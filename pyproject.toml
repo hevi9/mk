@@ -63,3 +63,12 @@ disable = ["no-self-use",
 profile = "black"
 multi_line_output = 3
 
+[tool.coverage.run]
+branch = true
+command_line = '-m pytest'
+source = ['mk/']
+
+[tool.coverage.report]
+precision = 2
+skip_covered = true
+fail_under = 90
