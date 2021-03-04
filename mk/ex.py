@@ -7,12 +7,12 @@ class MkError(Exception):
 
 class DuplicateSourceError(MkError):
     location: Location
-    id: str
+    id2: str
 
-    def __init__(self, msg, id: str, location: Location):
-        super().__init__(f"Duplicate {id} in {location}: {msg}")
+    def __init__(self, msg, id2: str, location: Location):
+        super().__init__(f"Duplicate {id2} in {location}: {msg}")
         self.location = location
-        self.id = id
+        self.id2 = id2
 
 
 class FieldError(MkError):

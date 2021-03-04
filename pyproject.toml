@@ -48,15 +48,14 @@ disable = ["no-self-use",
     "missing-module-docstring",
     "invalid-name",
     "missing-class-docstring",
-    "redefined-outer-name",
     "subprocess-run-check",
     "empty-docstring",
-    "redefined-builtin",
     "too-few-public-methods",
     "fixme",
     "broad-except",
     "unsubscriptable-object", # https://github.com/PyCQA/pylint/issues/3882
-    "duplicate-code",
+    "duplicate-code", # no sense
+    "cyclic-import", # https://github.com/PyCQA/pylint/issues/3525
 ]
 
 [tool.isort]

@@ -89,7 +89,7 @@ def list(ctx):
         table = Table(box=None)
         table.add_column("Source")
         table.add_column("Description")
-        for source in sorted(index.list(), key=lambda s: s.id):
+        for source in sorted(index.list(), key=lambda s: s.id2):
             if source.show:
                 table.add_row(source.id, source.doc)
         console.print(table)

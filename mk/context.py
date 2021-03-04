@@ -8,9 +8,9 @@ env = jinja2.Environment(  # nosec
 
 
 def render(text: str, context: dict) -> str:
-    globals = env.make_globals({})
+    globals2 = env.make_globals({})
     tmpl = jinja2.Template.from_code(
-        env, env.compile(text, filename="TODO:FILE"), globals, None
+        env, env.compile(text, filename="TODO:FILE"), globals2, None
     )
     return tmpl.render(context)
 
