@@ -36,10 +36,11 @@ repos:
 -   repo: local
     hooks:
     -   id: pylint
-        name: Check code with pylint
         entry: pylint
-        language: system
+        language: python
         types: [python]
+        require_serial: true
+        name: Check code with pylint
 
 -   repo: local
     hooks:
